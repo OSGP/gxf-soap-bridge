@@ -1,0 +1,10 @@
+logging:
+    level:
+        org:
+            gxf:
+                soapbridge: DEBUG
+spring:
+    kafka:
+        bootstrap-servers: localhost:9092
+        consumer:
+            group-id: gxf-proxy
