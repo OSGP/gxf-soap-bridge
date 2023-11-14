@@ -1,4 +1,6 @@
-// Copyright 2023 Alliander N.V.
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 
 plugins {
     id("org.springframework.boot")
@@ -10,16 +12,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("com.microsoft.azure:msal4j:1.13.10")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
     implementation(kotlin("reflect"))
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
-
-    implementation(project(":components:kafka"))
-    implementation(project(":components:soap"))
 
     implementation("org.springframework:spring-aspects")
 
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("org.mockito:mockito-junit-jupiter")
 }
 
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootBuildImage> {
@@ -46,8 +52,6 @@ testing {
                 implementation("org.assertj:assertj-core")
                 implementation("org.springframework.boot:spring-boot-starter-webflux")
                 implementation("org.wiremock:wiremock:3.3.1")
-
-                implementation(project(":components:soap"))
 
                 implementation("org.testcontainers:kafka:1.17.6")
             }
