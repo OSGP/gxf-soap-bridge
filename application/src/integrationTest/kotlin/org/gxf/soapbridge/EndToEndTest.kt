@@ -1,4 +1,6 @@
-// Copyright 2023 Alliander N.V.
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 
 package org.gxf.soapbridge
 
@@ -7,7 +9,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.gxf.soapbridge.application.factories.SslContextFactory
-import org.gxf.soapbridge.application.properties.SoapConfigurationProperties
+import org.gxf.soapbridge.configuration.properties.SoapConfigurationProperties
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -47,7 +49,7 @@ class EndToEndTest(
 
     @Test
     fun testRequestResponse(applicationContext: ApplicationContext) {
-        // Setup an SSL context for organisation "testClient" using its client certificate
+        // Arrange an SSL context for organisation "testClient" using its client certificate
         val sslContextForOrganisation = sslContextFactory.createSslContext("testClient")
         val httpClient = HttpClient.newBuilder()
             .sslContext(sslContextForOrganisation)
