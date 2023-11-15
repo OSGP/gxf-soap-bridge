@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 import org.gxf.soapbridge.application.services.ConnectionCacheService;
 import org.gxf.soapbridge.application.services.SigningService;
 import org.gxf.soapbridge.configuration.properties.SoapConfigurationProperties;
@@ -87,8 +88,8 @@ public class SoapEndpoint implements HttpRequestHandler {
 
     // For debugging, print all headers and parameters.
     LOGGER.debug("Start of SoapEndpoint.handleRequest()");
-    printHeaderValues(request);
-    printParameterValues(request);
+    logHeaderValues(request);
+    logParameterValues(request);
 
     // Get the context, which should be an OSGP SOAP end-point or a
     // NOTIFICATION SOAP end-point.
@@ -173,7 +174,7 @@ public class SoapEndpoint implements HttpRequestHandler {
         "End of SoapEndpoint.handleRequest() --> incoming request handled and response returned.");
   }
 
-  private void printHeaderValues(final HttpServletRequest request) {
+  private void logHeaderValues(final HttpServletRequest request) {
     if (LOGGER.isDebugEnabled()) {
       for (final Enumeration<String> headerNames = request.getHeaderNames();
           headerNames.hasMoreElements(); ) {
@@ -184,19 +185,22 @@ public class SoapEndpoint implements HttpRequestHandler {
     }
   }
 
-  private void printParameterValues(final HttpServletRequest request) {
+  private void logParameterValues(final HttpServletRequest request) {
     if (LOGGER.isDebugEnabled()) {
       for (final Enumeration<String> parameterNames = request.getParameterNames();
           parameterNames.hasMoreElements(); ) {
         final String parameterName = parameterNames.nextElement();
-        final String[] parameterValues = request.getParameterValues(parameterName);
-        String str = "";
-        for (final String parameterValue : parameterValues) {
-          str = str.concat(parameterValue).concat(" ");
-        }
-        LOGGER.debug(" parameter name: {} parameter value: {}", parameterName, str);
+        final String valuesString =
+            Arrays.stream(request.getParameterValues(parameterName))
+                .map(this::sanitize)
+                .collect(Collectors.joining(" "));
+        LOGGER.debug(" parameter name: {} parameter value(s): {}", parameterName, valuesString);
       }
     }
+  }
+
+  private String sanitize(final String value) {
+    return value.replace('\n', '_').replace('\r', '_').replace('\t', '_');
   }
 
   private String getContextForRequestType(final HttpServletRequest request) {
