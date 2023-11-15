@@ -28,8 +28,8 @@ public class HttpsUrlConnectionFactory {
   private final HostnameVerifierFactory hostnameVerifierFactory;
 
   public HttpsUrlConnectionFactory(
-          final SslContextCacheService sslContextCacheService,
-          final HostnameVerifierFactory hostnameVerifierFactory) {
+      final SslContextCacheService sslContextCacheService,
+      final HostnameVerifierFactory hostnameVerifierFactory) {
     this.sslContextCacheService = sslContextCacheService;
     this.hostnameVerifierFactory = hostnameVerifierFactory;
   }
