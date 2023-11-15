@@ -21,7 +21,7 @@ public class RandomStringFactory {
   /**
    * Generate a random string.
    *
-   * @return A string of length {@link RandomStringFactory#defaultLength}
+   * @return A string of length {@link RandomStringFactory#DEFAULT_LENGTH}
    */
   public static String generateRandomString() {
     return randomString(DEFAULT_LENGTH);

@@ -6,6 +6,7 @@ package org.gxf.soapbridge.application.configuration;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.gxf.soapbridge.soap.endpoints.SoapEndpoint;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 
@@ -18,7 +19,7 @@ public class SoapConfiguration extends AbstractHandlerMapping {
   }
 
   @Override
-  protected Object getHandlerInternal(final HttpServletRequest request) {
+  protected Object getHandlerInternal(@NotNull final HttpServletRequest request) {
     return soapEndpoint;
   }
 }

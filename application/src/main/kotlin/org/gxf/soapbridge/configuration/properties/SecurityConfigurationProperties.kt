@@ -30,9 +30,9 @@ class StoreConfigurationProperties(
 
 
 class SigningConfigurationProperties(
-    val keyType: String,
-    val signKeyFile: String,
-    val verifyKeyFile: String,
+    keyType: String,
+    signKeyFile: String,
+    verifyKeyFile: String,
     /** Indicates which provider is used for signing and verification. */
     val provider: String,
     /** Indicates which signature is used for signing and verification. */

@@ -28,7 +28,7 @@ class SoapClientTest {
   @Mock HttpsUrlConnectionFactory httpsUrlConnectionFactory;
   @Mock SigningService signingService;
 
-  byte[] testContent = "test content".getBytes(StandardCharsets.UTF_8);
+  private final byte[] testContent = "test content".getBytes(StandardCharsets.UTF_8);
 
   @Spy
   SoapConfigurationProperties soapConfigurationProperties =

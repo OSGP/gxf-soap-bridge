@@ -9,7 +9,6 @@ import javax.net.ssl.SSLContext;
 import org.gxf.soapbridge.application.factories.SslContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,7 +30,11 @@ public class SslContextCacheService {
   private static final ConcurrentHashMap<String, SSLContext> cache = new ConcurrentHashMap<>();
 
   /** Factory which assists in creating {@link SSLContext} instances. */
-  @Autowired private SslContextFactory sslContextFactory;
+  private final SslContextFactory sslContextFactory;
+
+  public SslContextCacheService(final SslContextFactory sslContextFactory) {
+    this.sslContextFactory = sslContextFactory;
+  }
 
   /**
    * Creates a new {@link SSLContext} instance and caches it, or fetches an existing instance from

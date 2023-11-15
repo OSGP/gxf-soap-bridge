@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package org.gxf.soapbridge.messaging.exceptions
+package org.gxf.soapbridge.exceptions
 
 
 class ProxyMessageException : Exception {

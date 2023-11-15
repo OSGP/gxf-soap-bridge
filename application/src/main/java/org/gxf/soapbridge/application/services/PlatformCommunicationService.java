@@ -7,7 +7,6 @@ import org.gxf.soapbridge.soap.clients.SoapClient;
 import org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** Service which can send SOAP requests to OSGP. */
@@ -17,10 +16,16 @@ public class PlatformCommunicationService {
   private static final Logger LOGGER = LoggerFactory.getLogger(PlatformCommunicationService.class);
 
   /** SOAP client used to sent request messages to OSGP. */
-  @Autowired private SoapClient soapClient;
+  private final SoapClient soapClient;
 
   /** Service used to sign and/or verify the content of queue messages. */
-  @Autowired private SigningService signingService;
+  private final SigningService signingService;
+
+  public PlatformCommunicationService(
+      final SoapClient soapClient, final SigningService signingService) {
+    this.soapClient = soapClient;
+    this.signingService = signingService;
+  }
 
   /**
    * Process an incoming queue message. The content of the message has to be verified by the {@link

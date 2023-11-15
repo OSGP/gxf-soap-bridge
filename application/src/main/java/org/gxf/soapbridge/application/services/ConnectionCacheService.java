@@ -57,31 +57,6 @@ public class ConnectionCacheService {
   }
 
   /**
-   * Determine if the response is available for a particular {@link Connection} instance.
-   *
-   * @param connectionId The key for the {@link Connection} instance obtained by calling {@link
-   *     ConnectionCacheService#cacheConnection()}.
-   * @return True in case the response from the Platform has resolved and is available, false
-   *     otherwise.
-   * @throws ConnectionNotFoundInCacheException In case the connection is not present in the {@link
-   *     ConnectionCacheService#cache}.
-   */
-  public boolean hasResponseResolved(final String connectionId)
-      throws ConnectionNotFoundInCacheException {
-    final Connection connection = cache.get(connectionId);
-    if (connection != null) {
-      LOGGER.debug(
-          "hasResponseResolved called with connectionId: {}, this.cache.size(): {}",
-          connectionId,
-          cache.size());
-      return connection.isResponseResolved();
-    } else {
-      throw new ConnectionNotFoundInCacheException(
-          String.format("Unable to find connection for connectionId: %s", connectionId));
-    }
-  }
-
-  /**
    * Removes a {@link Connection} instance from the {@link ConnectionCacheService#cache}.
    *
    * @param connectionId The key for the {@link Connection} instance obtained by calling {@link
