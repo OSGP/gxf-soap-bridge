@@ -24,7 +24,7 @@ public class SigningService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SigningService.class);
 
-  private SigningService(final SecurityConfigurationProperties securityConfiguration) {
+  public SigningService(final SecurityConfigurationProperties securityConfiguration) {
     signingConfiguration = securityConfiguration.getSigning();
   }
 
