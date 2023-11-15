@@ -17,7 +17,6 @@ import org.gxf.soapbridge.soap.exceptions.UnableToCreateHttpsURLConnectionExcept
 import org.gxf.soapbridge.valueobjects.ProxyServerResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /** This {@link @Component} class can send SOAP messages to the Platform. */
@@ -27,15 +26,26 @@ public class SoapClient {
   private static final Logger LOGGER = LoggerFactory.getLogger(SoapClient.class);
 
   /** Message sender to send messages to a queue. */
-  @Autowired private ProxyResponseKafkaSender proxyReponseSender;
+  private final ProxyResponseKafkaSender proxyReponseSender;
 
-  @Autowired private SoapConfigurationProperties soapConfiguration;
+  private final SoapConfigurationProperties soapConfiguration;
 
   /** Factory which assist in creating {@link HttpsURLConnection} instances. */
-  @Autowired private HttpsUrlConnectionFactory httpsUrlConnectionFactory;
+  private final HttpsUrlConnectionFactory httpsUrlConnectionFactory;
 
   /** Service used to sign the content of a message. */
-  @Autowired private SigningService signingService;
+  private final SigningService signingService;
+
+  public SoapClient(
+      final ProxyResponseKafkaSender proxyReponseSender,
+      final SoapConfigurationProperties soapConfiguration,
+      final HttpsUrlConnectionFactory httpsUrlConnectionFactory,
+      final SigningService signingService) {
+    this.proxyReponseSender = proxyReponseSender;
+    this.soapConfiguration = soapConfiguration;
+    this.httpsUrlConnectionFactory = httpsUrlConnectionFactory;
+    this.signingService = signingService;
+  }
 
   /**
    * Send a request to the Platform.

@@ -5,7 +5,7 @@
 package org.gxf.soapbridge.valueobjects
 
 import mu.KotlinLogging
-import org.gxf.soapbridge.messaging.exceptions.ProxyMessageException
+import org.gxf.soapbridge.exceptions.ProxyMessageException
 import java.util.*
 
 class ProxyServerResponseMessage(connectionId: String, val soapResponse: String) :

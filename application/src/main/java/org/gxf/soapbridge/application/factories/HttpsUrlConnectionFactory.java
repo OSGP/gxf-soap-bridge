@@ -13,7 +13,6 @@ import org.gxf.soapbridge.soap.exceptions.ProxyServerException;
 import org.gxf.soapbridge.soap.exceptions.UnableToCreateHttpsURLConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -24,9 +23,16 @@ public class HttpsUrlConnectionFactory {
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpsUrlConnectionFactory.class);
 
   /** Cache of {@link SSLContext} instances used to obtain {@link HttpsURLConnection} instances. */
-  @Autowired private SslContextCacheService sslContextCacheService;
+  private final SslContextCacheService sslContextCacheService;
 
-  @Autowired private HostnameVerifierFactory hostnameVerifierFactory;
+  private final HostnameVerifierFactory hostnameVerifierFactory;
+
+  public HttpsUrlConnectionFactory(
+          final SslContextCacheService sslContextCacheService,
+          final HostnameVerifierFactory hostnameVerifierFactory) {
+    this.sslContextCacheService = sslContextCacheService;
+    this.hostnameVerifierFactory = hostnameVerifierFactory;
+  }
 
   /**
    * Create an {@link HttpsURLConnection} instance for the given arguments.
@@ -48,11 +54,11 @@ public class HttpsUrlConnectionFactory {
       throws UnableToCreateHttpsURLConnectionException {
     try {
       // Get SSLContext instance.
-      SSLContext sslContext = null;
-      if (StringUtils.isEmpty(commonName)) {
-        sslContext = sslContextCacheService.getSslContext();
-      } else {
+      final SSLContext sslContext;
+      if (StringUtils.hasText(commonName)) {
         sslContext = sslContextCacheService.getSslContextForCommonName(commonName);
+      } else {
+        sslContext = sslContextCacheService.getSslContext();
       }
       // Check SSLContext instance.
       if (sslContext == null) {
@@ -92,8 +98,7 @@ public class HttpsUrlConnectionFactory {
 
       return connection;
     } catch (final IOException | ProxyServerException e) {
-      LOGGER.error("Creating connection failed.", e);
-      throw new UnableToCreateHttpsURLConnectionException(e.getMessage());
+      throw new UnableToCreateHttpsURLConnectionException("Creating connection failed.", e);
     }
   }
 }

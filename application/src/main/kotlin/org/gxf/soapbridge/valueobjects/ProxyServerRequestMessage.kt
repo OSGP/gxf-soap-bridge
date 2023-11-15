@@ -5,7 +5,7 @@
 package org.gxf.soapbridge.valueobjects
 
 import mu.KotlinLogging
-import org.gxf.soapbridge.messaging.exceptions.ProxyMessageException
+import org.gxf.soapbridge.exceptions.ProxyMessageException
 import java.util.*
 
 
@@ -44,7 +44,7 @@ class ProxyServerRequestMessage(
                     "Invalid number of tokens, not trying to create ProxyServerRequestMessage."
                 )
             }
-            if (LOGGER.isDebugEnabled()) {
+            if (LOGGER.isDebugEnabled) {
                 printValues(numTokens, split)
             }
             val connectionId = split[0]

@@ -16,36 +16,24 @@ public class Connection {
    */
   private static final int CONNECTION_ID_LENGTH = 32;
 
-  private volatile boolean responseResolved;
-
   private String soapResponse;
 
-  private String connectionId;
+  private final String connectionId;
 
   private final Semaphore responseReceived;
 
   public Connection() {
-    responseResolved = false;
     responseReceived = new Semaphore(0);
     connectionId = RandomStringFactory.generateRandomString(CONNECTION_ID_LENGTH);
   }
 
-  public boolean isResponseResolved() {
-    return responseResolved;
-  }
-
-  public void setResponse(final String soapResponse) {
-    responseResolved = true;
+  public void setSoapResponse(final String soapResponse) {
     this.soapResponse = soapResponse;
     responseReceived();
   }
 
   public String getSoapResponse() {
     return soapResponse;
-  }
-
-  public void setConnectionId(final String connectionId) {
-    this.connectionId = connectionId;
   }
 
   public String getConnectionId() {

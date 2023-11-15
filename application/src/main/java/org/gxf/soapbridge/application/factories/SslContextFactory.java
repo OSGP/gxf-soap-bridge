@@ -14,7 +14,6 @@ import org.gxf.soapbridge.soap.exceptions.UnableToCreateKeyManagersException;
 import org.gxf.soapbridge.soap.exceptions.UnableToCreateTrustManagersException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /** This {@link @Component} class can create {@link SSLContext} instances. */
@@ -30,7 +29,7 @@ public class SslContextFactory {
    */
   private static final String SSL_CONTEXT_PROTOCOL = "TLS";
 
-  @Autowired private SecurityConfigurationProperties securityConfiguration;
+  private final SecurityConfigurationProperties securityConfiguration;
 
   /**
    * Using the trust store, a {@link TrustManager} instance is created. This instance is created
@@ -47,6 +46,10 @@ public class SslContextFactory {
    * create {@link SSLContext} instances.
    */
   private TrustManager[] trustManagersForHttpsWithClientCertificate;
+
+  public SslContextFactory(final SecurityConfigurationProperties securityConfiguration) {
+    this.securityConfiguration = securityConfiguration;
+  }
 
   /**
    * Create an {@link SSLContext} instance.

@@ -21,6 +21,7 @@ import org.gxf.soapbridge.soap.clients.Connection;
 import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.gxf.soapbridge.soap.exceptions.ProxyServerException;
 import org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContext;
@@ -80,7 +81,8 @@ public class SoapEndpoint implements HttpRequestHandler {
 
   /** Handles incoming SOAP requests. */
   @Override
-  public void handleRequest(final HttpServletRequest request, final HttpServletResponse response)
+  public void handleRequest(
+      @NotNull final HttpServletRequest request, @NotNull final HttpServletResponse response)
       throws ServletException, IOException {
 
     // For debugging, print all headers and parameters.
