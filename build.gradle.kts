@@ -31,6 +31,8 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "eclipse")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+    apply(plugin = "jacoco")
+    apply(plugin = "jacoco-report-aggregation")
 
     group = "org.gxf.soap-bridge"
     version = rootProject.version
