@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 
 @Component
-public class SoapConfiguration extends AbstractHandlerMapping {
+public class SoapEndpointMapping extends AbstractHandlerMapping {
   private final SoapEndpoint soapEndpoint;
 
-  public SoapConfiguration(final SoapEndpoint soapEndpoint) {
+  public SoapEndpointMapping(final SoapEndpoint soapEndpoint) {
     this.soapEndpoint = soapEndpoint;
   }
 
