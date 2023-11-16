@@ -36,7 +36,6 @@ class ProxyServerRequestMessage(
         @Throws(ProxyMessageException::class)
         fun createInstanceFromString(string: String): ProxyServerRequestMessage {
             val split = string.split(SEPARATOR)
-            "een of andere string".lines()
             val numTokens = split.size
             LOGGER.debug("split.length: {}", numTokens)
             if (numTokens < 4 || numTokens > 5) {
