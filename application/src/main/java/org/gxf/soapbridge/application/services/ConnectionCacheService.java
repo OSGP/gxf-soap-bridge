@@ -4,7 +4,6 @@
 package org.gxf.soapbridge.application.services;
 
 import java.util.concurrent.ConcurrentHashMap;
-import org.gxf.soapbridge.application.utils.RandomStringFactory;
 import org.gxf.soapbridge.soap.clients.Connection;
 import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.slf4j.Logger;

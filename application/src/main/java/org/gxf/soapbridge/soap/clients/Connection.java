@@ -3,18 +3,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.soapbridge.soap.clients;
 
+import java.util.UUID;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import org.gxf.soapbridge.application.services.ConnectionCacheService;
-import org.gxf.soapbridge.application.utils.RandomStringFactory;
 
 public class Connection {
-
-  /**
-   * Default length for the connection id, which is the key for the {@link
-   * ConnectionCacheService#cache}.
-   */
-  private static final int CONNECTION_ID_LENGTH = 32;
 
   private String soapResponse;
 
@@ -24,7 +18,7 @@ public class Connection {
 
   public Connection() {
     responseReceived = new Semaphore(0);
-    connectionId = RandomStringFactory.generateRandomString(CONNECTION_ID_LENGTH);
+    connectionId = UUID.randomUUID().toString();
   }
 
   public void setSoapResponse(final String soapResponse) {
