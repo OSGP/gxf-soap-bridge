@@ -32,7 +32,7 @@ class ProxyServerResponseMessage(connectionId: String, val soapResponse: String)
         fun createInstanceFromString(string: String): ProxyServerResponseMessage {
             val split = string.split(SEPARATOR)
             val numTokens = split.size
-            logger.debug("split.length: {}", numTokens)
+            logger.debug { "split.length: ${numTokens}" }
             if (numTokens < 3) {
                 throw ProxyMessageException(
                     "Invalid number of tokens, don't try to create ProxyServerResponseMessage"

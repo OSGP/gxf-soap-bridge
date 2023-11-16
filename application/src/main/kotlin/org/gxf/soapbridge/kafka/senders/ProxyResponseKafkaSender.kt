@@ -20,7 +20,7 @@ class ProxyResponseKafkaSender(
     private val topic = topicConfiguration.outgoing.responses
 
     fun send(responseMessage: ProxyServerResponseMessage) {
-        logger.debug("SOAP payload: ${responseMessage.soapResponse} to $topic")
+        logger.debug { "SOAP payload: ${responseMessage.soapResponse} to $topic" }
         kafkaTemplate.send(topic, responseMessage.constructSignedString())
     }
 }

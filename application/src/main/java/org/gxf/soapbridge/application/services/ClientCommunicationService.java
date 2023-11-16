@@ -55,7 +55,7 @@ public class ClientCommunicationService {
           connection.setSoapResponse("Security check has failed.");
         }
       } else {
-        LOGGER.error("Cached connection is null");
+        LOGGER.error("No connection found in cache for id.");
       }
     } catch (final ConnectionNotFoundInCacheException e) {
       LOGGER.error("ConnectionNotFoundInCacheException", e);
