@@ -13,9 +13,9 @@ class SoapConfigurationProperties(
      * Maximum number of seconds this {@link SoapEndpoint} will wait for a response from the other end
      * before terminating the connection with the client application.
      */
-    val timeOut: Int,
+    val timeout: Int,
     /**
-     * Time outs for specific functions.
+     * Timeouts for specific functions.
      */
     val customTimeouts: String,
     val callEndpoint: SoapEndpointConfiguration,

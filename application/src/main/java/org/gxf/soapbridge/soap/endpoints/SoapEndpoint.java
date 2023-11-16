@@ -74,10 +74,10 @@ public class SoapEndpoint implements HttpRequestHandler {
     for (int i = 0; i < split.length; i += 2) {
       final String key = split[i];
       final Integer value = Integer.valueOf(split[i + 1]);
-      LOGGER.debug("Adding custom time out with key: {} and value: {}", key, value);
+      LOGGER.debug("Adding custom timeout with key: {} and value: {}", key, value);
       customTimeOutsMap.put(key, value);
     }
-    LOGGER.debug("Added {} custom time outs to the map", customTimeOutsMap.size());
+    LOGGER.debug("Added {} custom timeouts to the map", customTimeOutsMap.size());
   }
 
   /** Handles incoming SOAP requests. */
@@ -134,21 +134,21 @@ public class SoapEndpoint implements HttpRequestHandler {
     }
 
     final Integer customTimeOut = shouldUseCustomTimeOut(soapPayload);
-    final int timeOut;
+    final int timeout;
     if (customTimeOut == INVALID_CUSTOM_TIME_OUT) {
-      timeOut = soapConfiguration.getTimeOut();
-      LOGGER.debug("Using default time out: {} seconds", timeOut);
+      timeout = soapConfiguration.getTimeout();
+      LOGGER.debug("Using default timeout: {} seconds", timeout);
     } else {
-      LOGGER.debug("Using custom time out: {} seconds", customTimeOut);
-      timeOut = customTimeOut;
+      LOGGER.debug("Using custom timeout: {} seconds", customTimeOut);
+      timeout = customTimeOut;
     }
 
     try {
       proxyRequestsSender.send(requestMessage);
 
-      final boolean responseReceived = newConnection.waitForResponseReceived(timeOut);
+      final boolean responseReceived = newConnection.waitForResponseReceived(timeout);
       if (!responseReceived) {
-        LOGGER.info("No response received within the specified time out of {} seconds", timeOut);
+        LOGGER.info("No response received within the specified timeout of {} seconds", timeout);
         createErrorResponse(response);
         connectionCacheService.removeConnection(connectionId);
         return;
