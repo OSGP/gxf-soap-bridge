@@ -4,16 +4,12 @@
 
 package org.gxf.soapbridge.kafka.listeners
 
-import io.micrometer.observation.annotation.Observed
 import mu.KotlinLogging
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.gxf.soapbridge.application.services.PlatformCommunicationService
 import org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage
 import org.springframework.kafka.annotation.KafkaListener
-import org.springframework.kafka.annotation.RetryableTopic
-import org.springframework.retry.annotation.Backoff
 import org.springframework.stereotype.Component
-import java.net.SocketTimeoutException
 
 @Component
 class ProxyRequestKafkaListener(private val platformCommunicationService: PlatformCommunicationService) {

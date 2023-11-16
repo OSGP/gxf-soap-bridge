@@ -6,7 +6,6 @@ package org.gxf.soapbridge.soap.clients;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import org.gxf.soapbridge.application.services.ConnectionCacheService;
 
 public class Connection {
 
