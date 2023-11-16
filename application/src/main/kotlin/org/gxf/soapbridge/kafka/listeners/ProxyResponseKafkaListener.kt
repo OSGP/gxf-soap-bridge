@@ -21,13 +21,7 @@ class ProxyResponseKafkaListener(
 ) {
     private val logger = KotlinLogging.logger { }
 
-    @Observed(name = "responses.consumed")
     @KafkaListener(topics = ["\${topics.incoming.responses}"], id = "gxf-response-consumer")
-    @RetryableTopic(
-        backoff = Backoff(value = 3000L),
-        attempts = "2",
-        include = [SocketTimeoutException::class]
-    )
     fun consume(record: ConsumerRecord<String, String>) {
         logger.info("Received response")
         val responseMessage = ProxyServerResponseMessage.createInstanceFromString(record.value())

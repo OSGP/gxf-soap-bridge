@@ -19,13 +19,7 @@ import java.net.SocketTimeoutException
 class ProxyRequestKafkaListener(private val platformCommunicationService: PlatformCommunicationService) {
     private val logger = KotlinLogging.logger { }
 
-    @Observed(name = "requests.consumed")
     @KafkaListener(topics = ["\${topics.incoming.requests}"], id = "gxf-request-consumer")
-    @RetryableTopic(
-        backoff = Backoff(value = 3000L),
-        attempts = "2",
-        include = [SocketTimeoutException::class]
-    )
     fun consume(record: ConsumerRecord<String, String>) {
         logger.info("Received message")
         val requestMessage = ProxyServerRequestMessage.createInstanceFromString(record.value())
