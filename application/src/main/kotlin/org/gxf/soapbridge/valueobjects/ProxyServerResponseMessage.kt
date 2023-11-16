@@ -26,7 +26,7 @@ class ProxyServerResponseMessage(connectionId: String, val soapResponse: String)
          *
          * @param string The input string.
          * @return A ProxyServerResponseMessage instance.
-         * @throws ProxyServerException
+         * @throws ProxyMessageException
          */
         @Throws(ProxyMessageException::class)
         fun createInstanceFromString(string: String): ProxyServerResponseMessage {

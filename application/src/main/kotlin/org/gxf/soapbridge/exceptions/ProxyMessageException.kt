@@ -5,8 +5,4 @@
 package org.gxf.soapbridge.exceptions
 
 
-class ProxyMessageException : Exception {
-    constructor() : super()
-    constructor(message: String?) : super(message)
-    constructor(message: String?, t: Throwable?) : super(message, t)
-}
+class ProxyMessageException(message: String?) : Exception(message)

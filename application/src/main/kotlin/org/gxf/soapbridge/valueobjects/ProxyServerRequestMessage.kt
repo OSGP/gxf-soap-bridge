@@ -31,7 +31,7 @@ class ProxyServerRequestMessage(
          *
          * @param string The input string.
          * @return A ProxyServerRequestMessage instance.
-         * @throws ProxyServerException
+         * @throws ProxyMessageException
          */
         @Throws(ProxyMessageException::class)
         fun createInstanceFromString(string: String): ProxyServerRequestMessage {
