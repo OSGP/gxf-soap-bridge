@@ -77,7 +77,7 @@ public class SslContextFactory {
         // Use the trust manager to initialize an SSLContext instance.
         final SSLContext sslContext = SSLContext.getInstance(SSL_CONTEXT_PROTOCOL);
         sslContext.init(null, trustManagersForHttps, null);
-        LOGGER.info("Created SSL context using trust manager for HTTPS");
+        LOGGER.debug("Created SSL context using trust manager for HTTPS");
         return sslContext;
       } catch (final Exception e) {
         LOGGER.error("Unexpected exception while creating SSL context using trust manager", e);
@@ -98,7 +98,7 @@ public class SslContextFactory {
         // using: "SSLContext.setDefault(sslContext);" The SSl context
         // is unique for each organization because each organization has
         // their own *.pfx key store, which is the client certificate.
-        LOGGER.info("Created SSL context using trust manager and key manager for HTTPS");
+        LOGGER.debug("Created SSL context using trust manager and key manager for HTTPS");
         return sslContext;
       } catch (final Exception e) {
         LOGGER.error(

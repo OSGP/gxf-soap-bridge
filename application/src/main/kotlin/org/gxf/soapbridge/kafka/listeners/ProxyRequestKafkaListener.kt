@@ -17,7 +17,7 @@ class ProxyRequestKafkaListener(private val platformCommunicationService: Platfo
 
     @KafkaListener(topics = ["\${topics.incoming.requests}"], id = "gxf-request-consumer")
     fun consume(record: ConsumerRecord<String, String>) {
-        logger.info("Received message")
+        logger.debug { "Received request: ${record.key()}, ${record.value()}" }
         val requestMessage = ProxyServerRequestMessage.createInstanceFromString(record.value())
         platformCommunicationService.handleIncomingRequest(requestMessage)
     }

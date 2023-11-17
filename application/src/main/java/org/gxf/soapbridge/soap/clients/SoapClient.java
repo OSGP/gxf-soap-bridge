@@ -107,7 +107,7 @@ public class SoapClient {
     final SoapEndpointConfiguration callEndpoint = soapConfiguration.getCallEndpoint();
 
     final String uri = callEndpoint.getUri().concat(context);
-    LOGGER.info("Preparing to open connection for WEBAPP_REQUEST using URI: {}", uri);
+    LOGGER.debug("Preparing to open connection for WEBAPP_REQUEST using URI: {}", uri);
     return httpsUrlConnectionFactory.createConnection(
         uri, callEndpoint.getHostAndPort(), contentLength, commonName);
   }

@@ -148,7 +148,7 @@ public class SoapEndpoint implements HttpRequestHandler {
 
       final boolean responseReceived = newConnection.waitForResponseReceived(timeout);
       if (!responseReceived) {
-        LOGGER.info("No response received within the specified timeout of {} seconds", timeout);
+        LOGGER.error("No response received within the specified timeout of {} seconds", timeout);
         createErrorResponse(response);
         connectionCacheService.removeConnection(connectionId);
         return;
