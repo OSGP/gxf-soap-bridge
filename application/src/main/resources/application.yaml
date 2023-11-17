@@ -6,3 +6,10 @@ management:
 
 soap:
   hostname-verification-strategy: BROWSER_COMPATIBLE_HOSTNAMES
+
+kafka:
+  incoming:
+    requests:
+      concurrency: 1
+    responses:
+      concurrency: 1

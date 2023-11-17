@@ -17,7 +17,7 @@ class ProxyResponseKafkaSender(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    private val topic = topicConfiguration.outgoing.responses
+    private val topic = topicConfiguration.outgoing.responses.topic
 
     fun send(responseMessage: ProxyServerResponseMessage) {
         logger.debug { "SOAP payload: ${responseMessage.soapResponse} to $topic" }

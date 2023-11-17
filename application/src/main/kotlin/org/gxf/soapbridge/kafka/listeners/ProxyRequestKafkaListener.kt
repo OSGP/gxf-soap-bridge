@@ -15,7 +15,11 @@ import org.springframework.stereotype.Component
 class ProxyRequestKafkaListener(private val platformCommunicationService: PlatformCommunicationService) {
     private val logger = KotlinLogging.logger { }
 
-    @KafkaListener(topics = ["\${topics.incoming.requests}"], id = "gxf-request-consumer")
+    @KafkaListener(
+        id = "gxf-request-consumer",
+        topics = ["\${kafka.incoming.requests.topic}"],
+        concurrency = "\${kafka.incoming.requests.concurrency}"
+    )
     fun consume(record: ConsumerRecord<String, String>) {
         logger.debug { "Received request: ${record.key()}, ${record.value()}" }
         val requestMessage = ProxyServerRequestMessage.createInstanceFromString(record.value())

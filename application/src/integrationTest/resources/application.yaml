@@ -31,14 +31,20 @@ security:
     provider: SunRsaSign
     signature: SHA256withRSA
 
-topics:
-#  short circuit configuration: topics are linked back to the same proxy instance
+kafka:
+  #  short circuit configuration: topics are linked back to the same proxy instance
   outgoing:
-    requests: requests
-    responses: responses
+    requests:
+      topic: requests
+    responses:
+      topic: responses
   incoming:
-    requests: requests
-    responses: responses
+    requests:
+      topic: requests
+      concurrency: 1
+    responses:
+      topic: responses
+      concurrency: 1
 
 soap:
   call-endpoint:

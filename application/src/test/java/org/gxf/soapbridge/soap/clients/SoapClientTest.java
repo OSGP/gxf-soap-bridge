@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import javax.net.ssl.HttpsURLConnection;
 import org.gxf.soapbridge.application.factories.HttpsUrlConnectionFactory;
 import org.gxf.soapbridge.application.services.SigningService;
@@ -35,7 +36,7 @@ class SoapClientTest {
       new SoapConfigurationProperties(
           HostnameVerificationStrategy.BROWSER_COMPATIBLE_HOSTNAMES,
           45,
-          "",
+          new HashMap<>(),
           new SoapEndpointConfiguration("localhost", 443, "https"));
 
   @InjectMocks SoapClient soapClient;

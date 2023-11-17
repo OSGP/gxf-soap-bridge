@@ -26,20 +26,22 @@ security:
     provider: SunRsaSign
     signature: SHA256withRSA
 
-topics:
-  calls:
-    requests: proxy-server-calls-requests
-    responses: proxy-server-calls-responses
-  notifications:
-    requests: proxy-server-notification-requests
-    responses: proxy-server-notification-responses
+kafka:
+  outgoing:
+    requests:
+      topic: proxy-server-calls-requests
+    responses:
+      topic: proxy-server-calls-responses
+  incoming:
+    requests:
+      topic: proxy-server-notification-requests
+      concurrency: 1
+    responses:
+      topic: proxy-server-notification-responses
+      concurrency: 1
 
 soap:
-  notification:
-    host: localhost
-    port: 443
-    protocol: https
-  platform:
+  call-endpoint:
     host: localhost
     port: 443
     protocol: https
