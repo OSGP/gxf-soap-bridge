@@ -13,6 +13,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-logging")
     implementation("org.springframework.kafka:spring-kafka")
+    implementation("com.gxf.utilities:kafka-azure-oauth:0.2")
     implementation("com.microsoft.azure:msal4j:1.13.10")
     implementation("org.apache.httpcomponents:httpclient:4.5.13")
     implementation(kotlin("reflect"))
