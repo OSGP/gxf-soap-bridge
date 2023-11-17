@@ -21,6 +21,7 @@ import org.springframework.http.client.reactive.JdkClientHttpConnector
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.web.reactive.function.client.WebClient
 import java.net.http.HttpClient
+import java.time.Duration
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,7 +47,7 @@ class EndToEndTest(
     }
 
     @Test
-    fun testRequestResponse(applicationContext: ApplicationContext) {
+    fun testRequestResponse() {
         // Arrange an SSL context for organisation "testClient" using its client certificate
         val sslContextForOrganisation = sslContextFactory.createSslContext("testClient")
         val httpClient = HttpClient.newBuilder()
@@ -60,6 +61,7 @@ class EndToEndTest(
         val responseBody = webClient.post().uri(callUrl)
             .bodyValue(soapBody)
             .exchangeToMono { it.bodyToMono(String::class.java) }
+            .timeout(Duration.ofSeconds(10))
             .block()
 
         // Assert
