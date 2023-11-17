@@ -71,8 +71,8 @@ public class HttpsUrlConnectionFactory {
         return null;
       }
       // Create connection.
-      HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifierFactory.getHostnameVerifier());
       final HttpsURLConnection connection = (HttpsURLConnection) new URL(uri).openConnection();
+      connection.setHostnameVerifier(hostnameVerifierFactory.getHostnameVerifier());
       connection.setSSLSocketFactory(sslContext.getSocketFactory());
       connection.setDoInput(true);
       connection.setDoOutput(true);
