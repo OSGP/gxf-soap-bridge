@@ -15,12 +15,6 @@ server:
     trust-store-password: 123456
     trust-store-type: PKCS12
 
-wiremock:
-  call-proxy:
-    url: "https://localhost:9000"
-  notification-proxy:
-    url: "https://localhost:9001"
-
 security:
   key-store:
     location: src/integrationTest/resources/organisations/
