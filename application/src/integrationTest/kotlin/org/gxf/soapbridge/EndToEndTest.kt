@@ -9,7 +9,6 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.gxf.soapbridge.application.factories.SslContextFactory
-import org.gxf.soapbridge.configuration.properties.SoapConfigurationProperties
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -30,7 +29,6 @@ import java.net.http.HttpClient
 class EndToEndTest(
     @LocalServerPort private val soapPort: Int,
     @Autowired private val sslContextFactory: SslContextFactory,
-    @Autowired private val soapConfigProperties: SoapConfigurationProperties
 ) {
     private val proxyUrl = "https://localhost:$soapPort/proxy-server"
     private val methodPath = "/someSoapMethod"

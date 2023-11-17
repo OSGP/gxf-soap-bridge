@@ -4,7 +4,7 @@
 
 package org.gxf.soapbridge.valueobjects
 
-import java.util.*
+import java.util.Base64
 
 
 /** Base class for proxy-server messages.  */

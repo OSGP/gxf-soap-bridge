@@ -11,10 +11,6 @@ public class ProxyServerException extends Exception {
   /** Serial Version UID. */
   @Serial private static final long serialVersionUID = -8696835428244659385L;
 
-  public ProxyServerException() {
-    super();
-  }
-
   public ProxyServerException(final String message) {
     super(message);
   }

@@ -33,19 +33,19 @@ public class Connection {
     return connectionId;
   }
 
-  /*
+  /**
    * Indicates the response for this connection has been received.
    */
   public void responseReceived() {
     responseReceived.release();
   }
 
-  /*
+  /**
    * Waits for a response on this connection.
    *
-   * @timeout The number of seconds to wait for a response.
+   * @param timeout The number of seconds to wait for a response.
    *
-   * @returns true, if the response was received within @timeout seconds,
+   * @return true, if the response was received within @timeout seconds,
    * false otherwise.
    */
   public boolean waitForResponseReceived(final int timeout) throws InterruptedException {
