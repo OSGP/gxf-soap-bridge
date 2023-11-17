@@ -37,11 +37,11 @@ public class SoapClient {
   private final SigningService signingService;
 
   public SoapClient(
-      final ProxyResponseKafkaSender proxyReponseSender,
+      final ProxyResponseKafkaSender proxyResponseSender,
       final SoapConfigurationProperties soapConfiguration,
       final HttpsUrlConnectionFactory httpsUrlConnectionFactory,
       final SigningService signingService) {
-    this.proxyReponseSender = proxyReponseSender;
+    this.proxyReponseSender = proxyResponseSender;
     this.soapConfiguration = soapConfiguration;
     this.httpsUrlConnectionFactory = httpsUrlConnectionFactory;
     this.signingService = signingService;
