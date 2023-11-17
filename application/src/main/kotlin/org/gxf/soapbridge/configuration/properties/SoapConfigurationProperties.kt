@@ -30,7 +30,7 @@ class SoapEndpointConfiguration(
     port: Int,
     protocol: String
 ) {
-
+    // TODO Use java.net.URI class
     val hostAndPort = "$host:$port"
     val uri = "$protocol://${hostAndPort}"
 }

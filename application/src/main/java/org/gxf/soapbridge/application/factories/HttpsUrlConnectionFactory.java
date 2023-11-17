@@ -76,6 +76,7 @@ public class HttpsUrlConnectionFactory {
       connection.setSSLSocketFactory(sslContext.getSocketFactory());
       connection.setDoInput(true);
       connection.setDoOutput(true);
+      // TODO use constants for properties and method
       connection.setRequestMethod("POST");
       connection.setRequestProperty(
           "Accept-Encoding", "text/xml;charset=" + StandardCharsets.UTF_8.name());

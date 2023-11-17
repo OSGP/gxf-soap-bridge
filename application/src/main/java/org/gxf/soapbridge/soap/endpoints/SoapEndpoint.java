@@ -255,6 +255,7 @@ public class SoapEndpoint implements HttpRequestHandler {
       throws IOException {
     LOGGER.debug("Start - creating successful response");
     response.setStatus(HttpServletResponse.SC_OK);
+    // TODO use constants for headers
     response.addHeader("SOAP-ACTION", "");
     response.addHeader("Keep-Alive", "timeout=5, max=100");
     response.addHeader("Accept", "text/xml");
