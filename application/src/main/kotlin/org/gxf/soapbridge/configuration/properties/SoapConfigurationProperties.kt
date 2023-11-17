@@ -17,7 +17,7 @@ class SoapConfigurationProperties(
     /**
      * Timeouts for specific functions.
      */
-    val customTimeouts: Map<String, Int>,
+    val customTimeouts: Map<String, Int> = emptyMap(),
     val callEndpoint: SoapEndpointConfiguration,
 )
 
