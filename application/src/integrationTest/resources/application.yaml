@@ -21,9 +21,6 @@ wiremock:
   notification-proxy:
     url: "https://localhost:9001"
 
-proxy-server:
-  network-zone: BOTH
-
 security:
   key-store:
     location: src/integrationTest/resources/organisations/

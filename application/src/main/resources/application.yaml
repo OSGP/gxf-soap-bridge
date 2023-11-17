@@ -3,3 +3,6 @@ management:
     web:
       exposure:
         include: prometheus
+
+soap:
+  hostname-verification-strategy: BROWSER_COMPATIBLE_HOSTNAMES

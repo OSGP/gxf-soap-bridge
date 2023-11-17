@@ -10,9 +10,6 @@ spring:
     consumer:
       group-id: gxf-proxy
 
-proxy-server:
-    network-zone: IT
-
 security:
   key-store:
     location: /etc/ssl/certs
@@ -30,22 +27,20 @@ security:
     signature: SHA256withRSA
 
 topics:
-    calls:
-        requests: proxy-server-calls-requests
-        responses: proxy-server-calls-responses
-    notifications:
-        requests: proxy-server-notification-requests
-        responses: proxy-server-notification-responses
+  calls:
+    requests: proxy-server-calls-requests
+    responses: proxy-server-calls-responses
+  notifications:
+    requests: proxy-server-notification-requests
+    responses: proxy-server-notification-responses
 
 soap:
-    notification:
-        host: localhost
-        port: 443
-        protocol: https
-    platform:
-        host: localhost
-        port: 443
-        protocol: https
-    hostname-verification-strategy: BROWSER_COMPATIBLE_HOSTNAMES
-    time-out: 45
-    custom-timeouts: SetScheduleRequest,180,GetStatusRequest,120
+  notification:
+    host: localhost
+    port: 443
+    protocol: https
+  platform:
+    host: localhost
+    port: 443
+    protocol: https
+  time-out: 45
