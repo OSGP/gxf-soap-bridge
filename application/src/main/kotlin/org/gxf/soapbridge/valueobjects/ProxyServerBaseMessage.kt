@@ -16,6 +16,7 @@ abstract class ProxyServerBaseMessage(val connectionId: String) {
     /** Constructs a string separated by '~' from the fields of this instance.  */
     fun constructString() = getFieldsForMessage().joinToString(SEPARATOR, postfix = SEPARATOR)
 
+    // TODO possibly convert to jackson mapping
     /** Constructs a string separated by '~' from the fields of this instance followed by the signature.  */
     fun constructSignedString() = constructString() + signature
 
