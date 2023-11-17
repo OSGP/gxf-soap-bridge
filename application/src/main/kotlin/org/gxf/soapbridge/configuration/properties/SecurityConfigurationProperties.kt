@@ -17,7 +17,7 @@ import java.security.spec.X509EncodedKeySpec
 
 @ConfigurationProperties("security")
 class SecurityConfigurationProperties(
-    val keyStore: StoreConfigurationProperties,
+    val keyStore: StoreConfigurationProperties?,
     val trustStore: StoreConfigurationProperties,
     val signing: SigningConfigurationProperties
 )
