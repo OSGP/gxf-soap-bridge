@@ -47,7 +47,9 @@ soap:
     protocol: https
   hostname-verification-strategy: BROWSER_COMPATIBLE_HOSTNAMES
   time-out: 45
-  custom-timeouts: SetScheduleRequest,180,GetStatusRequest,120
+  custom-timeouts:
+    SetScheduleRequest: 180
+    GetStatusRequest: 120
 
 logging:
   level:

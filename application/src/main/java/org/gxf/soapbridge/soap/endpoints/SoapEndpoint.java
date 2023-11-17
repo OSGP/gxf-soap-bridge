@@ -55,7 +55,7 @@ public class SoapEndpoint implements HttpRequestHandler {
   private final SigningService signingService;
 
   /** Map of time-outs for specific functions. */
-  private final Map<String, Integer> customTimeOutsMap = new HashMap<>();
+  private final Map<String, Integer> customTimeOutsMap;
 
   public SoapEndpoint(
       final ConnectionCacheService connectionCacheService,
@@ -66,18 +66,7 @@ public class SoapEndpoint implements HttpRequestHandler {
     this.soapConfiguration = soapConfiguration;
     this.proxyRequestsSender = proxyRequestsSender;
     this.signingService = signingService;
-  }
-
-  @PostConstruct
-  public void init() {
-    final String[] split = soapConfiguration.getCustomTimeouts().split(",");
-    for (int i = 0; i < split.length; i += 2) {
-      final String key = split[i];
-      final Integer value = Integer.valueOf(split[i + 1]);
-      LOGGER.debug("Adding custom timeout with key: {} and value: {}", key, value);
-      customTimeOutsMap.put(key, value);
-    }
-    LOGGER.debug("Added {} custom timeouts to the map", customTimeOutsMap.size());
+    this.customTimeOutsMap = soapConfiguration.getCustomTimeouts();
   }
 
   /** Handles incoming SOAP requests. */
