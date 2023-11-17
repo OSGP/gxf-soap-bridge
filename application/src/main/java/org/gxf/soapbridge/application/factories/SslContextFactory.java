@@ -132,6 +132,7 @@ public class SslContextFactory {
       throws UnableToCreateKeyManagersException {
     // Assume the path does not have a trailing slash ( '/' ) and assume the
     // file extension to be *.pfx.
+    // TODO improve null safety
     final StoreConfigurationProperties keyStore = securityConfiguration.getKeyStore();
     final String pathToKeyStore = String.format("%s/%s.pfx", keyStore.getLocation(), commonName);
     LOGGER.debug("Opening key store, pathToKeyStore: {}", pathToKeyStore);
