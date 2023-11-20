@@ -5,7 +5,6 @@ package org.gxf.soapbridge.soap.endpoints;
 
 import static org.springframework.security.web.context.RequestAttributeSecurityContextRepository.DEFAULT_REQUEST_ATTR_NAME;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -66,7 +65,7 @@ public class SoapEndpoint implements HttpRequestHandler {
     this.soapConfiguration = soapConfiguration;
     this.proxyRequestsSender = proxyRequestsSender;
     this.signingService = signingService;
-    this.customTimeOutsMap = soapConfiguration.getCustomTimeouts();
+    customTimeOutsMap = soapConfiguration.getCustomTimeouts();
   }
 
   /** Handles incoming SOAP requests. */
@@ -245,7 +244,6 @@ public class SoapEndpoint implements HttpRequestHandler {
     LOGGER.debug("Start - creating successful response");
     response.setStatus(HttpServletResponse.SC_OK);
     // TODO use constants for headers
-    response.addHeader("SOAP-ACTION", "");
     response.addHeader("Keep-Alive", "timeout=5, max=100");
     response.addHeader("Accept", "text/xml");
     response.addHeader("Connection", "Keep-Alive");

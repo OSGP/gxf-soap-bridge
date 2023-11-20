@@ -83,7 +83,6 @@ public class HttpsUrlConnectionFactory {
       connection.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
       connection.setRequestProperty(
           "Content-Type", "text/xml;charset=" + StandardCharsets.UTF_8.name());
-      connection.setRequestProperty("SOAP-ACTION", "");
       connection.setRequestProperty("Content-Length", contentLength);
       connection.setRequestProperty("Host", host);
       connection.setRequestProperty("Connection", "Keep-Alive");
