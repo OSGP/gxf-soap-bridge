@@ -42,7 +42,7 @@ class SoapClientTest {
   @InjectMocks SoapClient soapClient;
 
   @Test
-  void shouldSendSoapRequestAndJmsResponse() throws Exception {
+  void shouldSendSoapRequestAndKafkaResponse() throws Exception {
     // arrange
     final HttpsURLConnection connection = setupConnectionMock();
     Mockito.when(

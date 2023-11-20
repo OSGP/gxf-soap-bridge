@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Service which handles SOAP responses from OSGP. The SOAP response will be set for the connection
+ * Service which handles SOAP responses from GXF. The SOAP response will be set for the connection
  * which correlates with the connection-id.
  */
 @Service
@@ -33,7 +33,7 @@ public class ClientCommunicationService {
 
   /**
    * Process an incoming queue message. The content of the message has to be verified by the {@link
-   * SigningService}. Then a response from OSGP will set for the pending connection from a client.
+   * SigningService}. Then a response from GXF will set for the pending connection from a client.
    *
    * @param proxyServerResponseMessage The incoming queue message to process.
    */

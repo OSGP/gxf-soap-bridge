@@ -80,7 +80,7 @@ public class SoapEndpoint implements HttpRequestHandler {
     logHeaderValues(request);
     logParameterValues(request);
 
-    // Get the context, which should be an OSGP SOAP end-point or a
+    // Get the context, which should be an GXF SOAP end-point or a
     // NOTIFICATION SOAP end-point.
     final String context = getContextForRequestType(request);
     LOGGER.debug("Context: {}", context);

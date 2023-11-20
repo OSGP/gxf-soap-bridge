@@ -9,13 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-/** Service which can send SOAP requests to OSGP. */
+/** Service which can send SOAP requests to GXF. */
 @Service
 public class PlatformCommunicationService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PlatformCommunicationService.class);
 
-  /** SOAP client used to sent request messages to OSGP. */
+  /** SOAP client used to sent request messages to GXF. */
   private final SoapClient soapClient;
 
   /** Service used to sign and/or verify the content of queue messages. */
@@ -29,7 +29,7 @@ public class PlatformCommunicationService {
 
   /**
    * Process an incoming queue message. The content of the message has to be verified by the {@link
-   * SigningService}. Then a SOAP message can be sent to OSGP using {@link SoapClient}.
+   * SigningService}. Then a SOAP message can be sent to GXF using {@link SoapClient}.
    *
    * @param proxyServerRequestMessage The incoming queue message to process.
    */
