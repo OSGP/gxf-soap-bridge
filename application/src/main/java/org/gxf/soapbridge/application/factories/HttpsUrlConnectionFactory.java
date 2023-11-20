@@ -13,6 +13,7 @@ import org.gxf.soapbridge.soap.exceptions.ProxyServerException;
 import org.gxf.soapbridge.soap.exceptions.UnableToCreateHttpsURLConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -76,18 +77,17 @@ public class HttpsUrlConnectionFactory {
       connection.setSSLSocketFactory(sslContext.getSocketFactory());
       connection.setDoInput(true);
       connection.setDoOutput(true);
-      // TODO use constants for properties and method
       connection.setRequestMethod("POST");
       connection.setRequestProperty(
-          "Accept-Encoding", "text/xml;charset=" + StandardCharsets.UTF_8.name());
-      connection.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
+          HttpHeaders.ACCEPT_ENCODING, "text/xml;charset=" + StandardCharsets.UTF_8.name());
+      connection.setRequestProperty(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.name());
       connection.setRequestProperty(
-          "Content-Type", "text/xml;charset=" + StandardCharsets.UTF_8.name());
-      connection.setRequestProperty("Content-Length", contentLength);
-      connection.setRequestProperty("Host", host);
-      connection.setRequestProperty("Connection", "Keep-Alive");
+          HttpHeaders.CONTENT_TYPE, "text/xml;charset=" + StandardCharsets.UTF_8.name());
+      connection.setRequestProperty(HttpHeaders.CONTENT_LENGTH, contentLength);
+      connection.setRequestProperty(HttpHeaders.HOST, host);
+      connection.setRequestProperty(HttpHeaders.CONNECTION, "Keep-Alive");
       connection.setRequestProperty(
-          "User-Agent",
+          HttpHeaders.USER_AGENT,
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36");
       LOGGER.debug(
           "Created HttpsURLConnection instance for uri: {}, host: {}, content length: {}, common name: {}",

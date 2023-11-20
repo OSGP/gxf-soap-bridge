@@ -24,6 +24,7 @@ import org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
@@ -243,10 +244,9 @@ public class SoapEndpoint implements HttpRequestHandler {
       throws IOException {
     LOGGER.debug("Start - creating successful response");
     response.setStatus(HttpServletResponse.SC_OK);
-    // TODO use constants for headers
     response.addHeader("Keep-Alive", "timeout=5, max=100");
-    response.addHeader("Accept", "text/xml");
-    response.addHeader("Connection", "Keep-Alive");
+    response.addHeader(HttpHeaders.ACCEPT, "text/xml");
+    response.addHeader(HttpHeaders.CONNECTION, "Keep-Alive");
     response.setContentType("text/xml; charset=" + StandardCharsets.UTF_8.name());
     response.getWriter().write(soap);
     LOGGER.debug("End - creating successful response");
