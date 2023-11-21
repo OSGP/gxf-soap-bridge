@@ -1,0 +1,64 @@
+spring:
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+server:
+  ssl:
+    enabled: true
+    protocol: TLS
+    client-auth: need
+    key-store: "classpath:proxy.keystore.jks"
+    key-store-password: 123456
+    key-store-type: PKCS12
+    key-alias: localhost
+    key-password: 123456
+    trust-store: "classpath:proxy.truststore.jks"
+    trust-store-password: 123456
+    trust-store-type: PKCS12
+
+security:
+  key-store:
+    location: src/integrationTest/resources/organisations/
+    password: 123456
+    type: pkcs12
+  trust-store:
+    location: src/integrationTest/resources/proxy.truststore.jks
+    password: 123456
+    type: jks
+  signing:
+    key-type: RSA
+    sign-key-file: src/integrationTest/resources/sign-key.der
+    verify-key-file: src/integrationTest/resources/verify-key.der
+    provider: SunRsaSign
+    signature: SHA256withRSA
+
+kafka:
+  #  short circuit configuration: topics are linked back to the same proxy instance
+  outgoing:
+    requests:
+      topic: requests
+    responses:
+      topic: responses
+  incoming:
+    requests:
+      topic: requests
+      concurrency: 1
+    responses:
+      topic: responses
+      concurrency: 1
+
+soap:
+  call-endpoint:
+    host: localhost
+    port: 8888
+    protocol: https
+  hostname-verification-strategy: BROWSER_COMPATIBLE_HOSTNAMES
+  time-out: 45
+  custom-timeouts:
+    SetScheduleRequest: 180
+    GetStatusRequest: 120
+
+logging:
+  level:
+    root: warn
+    org:
+      gxf: info
