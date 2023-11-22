@@ -18,6 +18,7 @@ class SecurityConfiguration {
     fun filterChain(http: HttpSecurity): SecurityFilterChain =
         http.authorizeHttpRequests {
             it
+                .requestMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
         }.x509 {
             it

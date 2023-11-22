@@ -20,6 +20,11 @@ public class SoapEndpointMapping extends AbstractHandlerMapping {
 
   @Override
   protected Object getHandlerInternal(@NotNull final HttpServletRequest request) {
-    return soapEndpoint;
+    if (request.getServletPath().startsWith("/actuator")) {
+      // Let Spring handle this routing
+      return null;
+    } else {
+      return soapEndpoint;
+    }
   }
 }
