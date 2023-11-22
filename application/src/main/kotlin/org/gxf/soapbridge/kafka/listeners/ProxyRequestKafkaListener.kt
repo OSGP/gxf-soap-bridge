@@ -18,7 +18,8 @@ class ProxyRequestKafkaListener(private val platformCommunicationService: Platfo
     @KafkaListener(
         id = "gxf-request-consumer",
         topics = ["\${kafka.incoming.requests.topic}"],
-        concurrency = "\${kafka.incoming.requests.concurrency}"
+        concurrency = "\${kafka.incoming.requests.concurrency}",
+        idIsGroup = false
     )
     fun consume(record: ConsumerRecord<String, String>) {
         logger.debug { "Received request: ${record.key()}, ${record.value()}" }

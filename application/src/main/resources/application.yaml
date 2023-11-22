@@ -4,6 +4,11 @@ management:
       exposure:
         include: prometheus
 
+spring:
+  kafka:
+    consumer:
+      group-id: gxf-soap-bridge
+
 soap:
   hostname-verification-strategy: BROWSER_COMPATIBLE_HOSTNAMES
 
