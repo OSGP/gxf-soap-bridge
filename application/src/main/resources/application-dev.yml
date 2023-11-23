@@ -3,7 +3,6 @@ logging:
     org:
       gxf:
         soapbridge: DEBUG
-
 spring:
   kafka:
     bootstrap-servers: localhost:9092
@@ -46,3 +45,14 @@ soap:
     port: 443
     protocol: https
   time-out: 45
+
+management:
+  server:
+    port: 8888
+  #    ssl:
+  #      enabled: false
+  #      client-auth: none
+  endpoints:
+    web:
+      exposure:
+        include: health
