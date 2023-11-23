@@ -37,6 +37,7 @@ class SoapClientTest {
           HostnameVerificationStrategy.BROWSER_COMPATIBLE_HOSTNAMES,
           45,
           new HashMap<>(),
+          true,
           new SoapEndpointConfiguration("localhost", 443, "https"));
 
   @InjectMocks SoapClient soapClient;
@@ -61,7 +62,7 @@ class SoapClientTest {
   }
 
   @Test
-  void shoudDisconnectWhenSoapRequestFails() throws Exception {
+  void shouldDisconnectWhenSoapRequestFails() throws Exception {
     // arrange
     final HttpsURLConnection connection = setupFailingConnectionMock();
     Mockito.when(
