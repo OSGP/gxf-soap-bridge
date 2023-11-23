@@ -94,15 +94,19 @@ public class SoapEndpoint implements HttpRequestHandler {
     }
 
     String organisationName = null;
-    if (request.getAttribute(DEFAULT_REQUEST_ATTR_NAME)
-            instanceof final SecurityContext securityContext
-        && securityContext.getAuthentication().getPrincipal() instanceof final User organisation) {
-      organisationName = organisation.getUsername();
-    }
-    if (organisationName == null) {
-      LOGGER.error("Unable to find client certificate, returning 500.");
-      createErrorResponse(response);
-      return;
+    if(soapConfiguration.getUseOrganisationFromRequest()) {
+      if (request.getAttribute(DEFAULT_REQUEST_ATTR_NAME)
+              instanceof final SecurityContext securityContext
+              && securityContext.getAuthentication().getPrincipal() instanceof final User organisation) {
+        organisationName = organisation.getUsername();
+      }
+      if (organisationName == null) {
+        LOGGER.error("Unable to find client certificate, returning 500.");
+        createErrorResponse(response);
+        return;
+      }
+    } else {
+      organisationName = "";
     }
 
     // Cache the incoming connection.
