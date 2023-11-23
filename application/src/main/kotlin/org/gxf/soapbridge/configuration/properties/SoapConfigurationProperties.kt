@@ -21,9 +21,9 @@ class SoapConfigurationProperties(
     /**
      * TODO Can we search for certificates on both sides
      *
-     * Property to not set common name based on the organisation on requests published to Kafka.
+     * Property to set common name based on the organisation on requests published to Kafka.
      *
-     * This makes it so the other listening proxy doesn't search for certificates by [org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage.commonName].
+     * If set to false the other listening proxy doesn't search for certificates by [org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage.commonName].
      * Instead, the other proxy will generate a new ssl context.
      */
     val useOrganisationFromRequest: Boolean = true,
