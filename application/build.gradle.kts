@@ -15,7 +15,9 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
     implementation("com.gxf.utilities:kafka-azure-oauth:0.2")
     implementation("com.microsoft.azure:msal4j:1.13.10")
-    implementation("org.apache.httpcomponents:httpclient:4.5.13")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13") {
+        exclude("commons-logging")
+    }
     implementation(kotlin("reflect"))
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
