@@ -11,12 +11,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.gxf.soapbridge.application.services.ConnectionCacheService;
 import org.gxf.soapbridge.application.services.SigningService;
 import org.gxf.soapbridge.configuration.properties.SoapConfigurationProperties;
 import org.gxf.soapbridge.kafka.senders.ProxyRequestKafkaSender;
+import org.gxf.soapbridge.monitoring.MonitoringService;
 import org.gxf.soapbridge.soap.clients.Connection;
 import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.gxf.soapbridge.soap.exceptions.ProxyServerException;
@@ -57,16 +59,20 @@ public class SoapEndpoint implements HttpRequestHandler {
   /** Map of time-outs for specific functions. */
   private final Map<String, Integer> customTimeOutsMap;
 
+  private final MonitoringService monitoringService;
+
   public SoapEndpoint(
-      final ConnectionCacheService connectionCacheService,
-      final SoapConfigurationProperties soapConfiguration,
-      final ProxyRequestKafkaSender proxyRequestsSender,
-      final SigningService signingService) {
+          final ConnectionCacheService connectionCacheService,
+          final SoapConfigurationProperties soapConfiguration,
+          final ProxyRequestKafkaSender proxyRequestsSender,
+          final SigningService signingService,
+          MonitoringService monitoringService) {
     this.connectionCacheService = connectionCacheService;
     this.soapConfiguration = soapConfiguration;
     this.proxyRequestsSender = proxyRequestsSender;
     this.signingService = signingService;
     customTimeOutsMap = soapConfiguration.getCustomTimeouts();
+    this.monitoringService = monitoringService;
   }
 
   /** Handles incoming SOAP requests. */
@@ -75,6 +81,7 @@ public class SoapEndpoint implements HttpRequestHandler {
       @NotNull final HttpServletRequest request, @NotNull final HttpServletResponse response)
       throws ServletException, IOException {
 
+    Instant startTime = Instant.now();
     // For debugging, print all headers and parameters.
     LOGGER.debug("Start of SoapEndpoint.handleRequest()");
     logHeaderValues(request);
@@ -89,6 +96,7 @@ public class SoapEndpoint implements HttpRequestHandler {
     final String soapPayload = readSoapPayload(request);
     if (soapPayload == null) {
       LOGGER.error("Unable to read SOAP request, returning 500.");
+      monitoringService.connectionClose(startTime, request.getContextPath(), false);
       createErrorResponse(response);
       return;
     }
@@ -102,6 +110,7 @@ public class SoapEndpoint implements HttpRequestHandler {
       }
       if (organisationName == null) {
         LOGGER.error("Unable to find client certificate, returning 500.");
+        monitoringService.connectionClose(startTime, request.getContextPath(), false);
         createErrorResponse(response);
         return;
       }
@@ -121,6 +130,7 @@ public class SoapEndpoint implements HttpRequestHandler {
       requestMessage.setSignature(signature);
     } catch (final ProxyServerException e) {
       LOGGER.error("Unable to sign message or set security key", e);
+      monitoringService.connectionClose(startTime, request.getContextPath(), false);
       createErrorResponse(response);
       connectionCacheService.removeConnection(connectionId);
       return;
@@ -142,12 +152,14 @@ public class SoapEndpoint implements HttpRequestHandler {
       final boolean responseReceived = newConnection.waitForResponseReceived(timeout);
       if (!responseReceived) {
         LOGGER.error("No response received within the specified timeout of {} seconds", timeout);
+        monitoringService.connectionClose(startTime, request.getContextPath(), false);
         createErrorResponse(response);
         connectionCacheService.removeConnection(connectionId);
         return;
       }
     } catch (final InterruptedException e) {
       LOGGER.error("Error while waiting for response", e);
+      monitoringService.connectionClose(startTime, request.getContextPath(), false);
       createErrorResponse(response);
       connectionCacheService.removeConnection(connectionId);
       Thread.currentThread().interrupt();
@@ -157,10 +169,12 @@ public class SoapEndpoint implements HttpRequestHandler {
     final String soap = readResponse(connectionId);
     if (soap == null) {
       LOGGER.error("Unable to read SOAP response: null");
+      monitoringService.connectionClose(startTime, request.getContextPath(), false);
       createErrorResponse(response);
     } else {
       LOGGER.debug("Request handled, trying to send response...");
       createSuccessFulResponse(response, soap);
+      monitoringService.connectionClose(startTime, request.getContextPath(), true);
     }
 
     LOGGER.debug(
