@@ -25,7 +25,6 @@ import java.time.Duration
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ComponentScan(basePackages = ["org.gxf.soapbridge"])
 @EmbeddedKafka(topics = ["requests", "responses"])
 class EndToEndTest(
     @LocalServerPort private val soapPort: Int,
