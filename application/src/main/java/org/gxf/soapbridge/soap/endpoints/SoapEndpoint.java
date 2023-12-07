@@ -20,7 +20,6 @@ import org.gxf.soapbridge.configuration.properties.SoapConfigurationProperties;
 import org.gxf.soapbridge.kafka.senders.ProxyRequestKafkaSender;
 import org.gxf.soapbridge.monitoring.MonitoringService;
 import org.gxf.soapbridge.soap.clients.Connection;
-import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.gxf.soapbridge.soap.exceptions.ProxyServerException;
 import org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage;
 import org.jetbrains.annotations.NotNull;

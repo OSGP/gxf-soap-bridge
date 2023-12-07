@@ -4,7 +4,6 @@
 package org.gxf.soapbridge.application.services;
 
 import org.gxf.soapbridge.soap.clients.Connection;
-import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.gxf.soapbridge.valueobjects.ProxyServerResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

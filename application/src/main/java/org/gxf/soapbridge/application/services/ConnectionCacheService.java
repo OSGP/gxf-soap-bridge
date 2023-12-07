@@ -9,7 +9,6 @@ import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import org.gxf.soapbridge.monitoring.MonitoringService;
 import org.gxf.soapbridge.soap.clients.Connection;
-import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
