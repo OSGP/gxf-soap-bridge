@@ -4,6 +4,9 @@
 package org.gxf.soapbridge.application.services;
 
 import java.util.concurrent.ConcurrentHashMap;
+
+import jakarta.annotation.PostConstruct;
+import org.gxf.soapbridge.monitoring.MonitoringService;
 import org.gxf.soapbridge.soap.clients.Connection;
 import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.slf4j.Logger;
@@ -20,6 +23,17 @@ public class ConnectionCacheService {
    * Map used to cache connections. The key is an uuid. The value is a {@link Connection} instance.
    */
   private static final ConcurrentHashMap<String, Connection> cache = new ConcurrentHashMap<>();
+
+  private final MonitoringService monitoringService;
+
+  public ConnectionCacheService(MonitoringService monitoringService) {
+    this.monitoringService = monitoringService;
+  }
+
+  @PostConstruct
+  public void postConstructor() {
+    monitoringService.monitorCacheSize(cache);
+  }
 
   /**
    * Creates a connection and puts it in the cache.

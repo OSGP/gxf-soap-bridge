@@ -1,5 +1,6 @@
 package org.gxf.soapbridge.monitoring
 
+import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Timer
 import org.springframework.stereotype.Service
@@ -14,6 +15,11 @@ class MonitoringService(
     companion object {
         private const val METRIC_PREFIX = "gxf.soap.bridge"
     }
+
+    fun monitorCacheSize(cache: Map<*, *>) =
+        Gauge
+            .builder("${METRIC_PREFIX}.cache.size", cache) { it.size.toDouble() }
+            .register(registry)
 
     fun recordConnectionTime(startTime: Instant, context: String, successful: Boolean) {
         val duration = Duration.between(startTime, Instant.now())
