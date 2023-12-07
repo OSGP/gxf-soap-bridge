@@ -15,7 +15,7 @@ class MonitoringService(
     companion object {
         private const val METRIC_PREFIX = "gxf.soap.bridge"
         const val CACHE_SIZE_METRIC = "${METRIC_PREFIX}.cache.size"
-        const val CONNECTION_TIMER_METRIC = "${METRIC_PREFIX}.cache.size"
+        const val CONNECTION_TIMER_METRIC = "${METRIC_PREFIX}.request.timer"
 
         const val CONNECTION_TIMER_CONTEXT_TAG = "context"
         const val CONNECTION_TIMER_SUCCESSFUL_TAG = "successful"
@@ -36,6 +36,8 @@ class MonitoringService(
     /**
      * Records the connection time for a request.
      *
+     * The timer also counts the amount of requests handled.
+     *
      * @param startTime The start time of the request.
      * @param context The context of the request.
      * @param successful Flag indicating if the request was successful.
@@ -45,7 +47,7 @@ class MonitoringService(
 
         Timer
             .builder(CONNECTION_TIMER_METRIC)
-            .description("Counts the request time of a soap call")
+            .description("The time it takes to handle an incoming soap request")
             .tag(CONNECTION_TIMER_CONTEXT_TAG, context)
             .tag(CONNECTION_TIMER_SUCCESSFUL_TAG, successful.toString())
             .register(registry)
