@@ -44,19 +44,19 @@ class MonitoringServiceTest {
 
         // Check if the meter exists and is 0
         assertNotNull(meterRegistry.find(CACHE_SIZE_METRIC).gauge())
-        assertEquals(0.0, gauge.value())
+        assertThat(gauge.value()).isEqualTo(0.0)
 
         // After adding an entry it should be 1
         cacheMap["key"] = "value"
-        assertEquals(1.0, gauge.value())
+        assertThat(gauge.value()).isEqualTo(1.0)
 
         // After reassigning the key it should stay at 1
         cacheMap["key"] = "new-value"
-        assertEquals(1.0, gauge.value())
+        assertThat(gauge.value()).isEqualTo(1.0)
 
         // After adding a second key it should be 2
         cacheMap["new-key"] = "new-value"
-        assertEquals(2.0, gauge.value())
+        assertThat(gauge.value()).isEqualTo(2.0)
     }
 
     @Test
@@ -85,14 +85,14 @@ class MonitoringServiceTest {
                 .tags(expectedTagsOne)
                 .timer()
 
-        assertNotNull(timerOne)
+        assertThat(timerOne).isNotNull()
 
         val timerTwo =
             Search.`in`(meterRegistry)
                 .name(CONNECTION_TIMER_METRIC)
                 .tags(expectedTagsTwo)
                 .timer()
-        assertNotNull(timerTwo)
+        assertThat(timerTwo).isNotNull()
 
     }
 
