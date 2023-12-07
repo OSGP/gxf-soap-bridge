@@ -14,21 +14,40 @@ class MonitoringService(
 
     companion object {
         private const val METRIC_PREFIX = "gxf.soap.bridge"
+        const val CACHE_SIZE_METRIC = "${METRIC_PREFIX}.cache.size"
+        const val CONNECTION_TIMER_METRIC = "${METRIC_PREFIX}.cache.size"
+
+        const val CONNECTION_TIMER_CONTEXT_TAG = "context"
+        const val CONNECTION_TIMER_SUCCESSFUL_TAG = "successful"
+
     }
 
+    /**
+     * Creates a gauge to monitor the size of a cache.
+     *
+     * @param cache The cache to monitor, represented as a Map.
+     * @return A Gauge object that measures the size of the cache.
+     */
     fun monitorCacheSize(cache: Map<*, *>) =
         Gauge
-            .builder("${METRIC_PREFIX}.cache.size", cache) { it.size.toDouble() }
+            .builder(CACHE_SIZE_METRIC, cache) { it.size.toDouble() }
             .register(registry)
 
+    /**
+     * Records the connection time for a request.
+     *
+     * @param startTime The start time of the request.
+     * @param context The context of the request.
+     * @param successful Flag indicating if the request was successful.
+     */
     fun recordConnectionTime(startTime: Instant, context: String, successful: Boolean) {
         val duration = Duration.between(startTime, Instant.now())
 
         Timer
-            .builder("${METRIC_PREFIX}.connection.timer")
-            .description("Counts the successful requests to the Maki API")
-            .tag("context", context)
-            .tag("successful", successful.toString())
+            .builder(CONNECTION_TIMER_METRIC)
+            .description("Counts the request time of a soap call")
+            .tag(CONNECTION_TIMER_CONTEXT_TAG, context)
+            .tag(CONNECTION_TIMER_SUCCESSFUL_TAG, successful.toString())
             .register(registry)
             .record(duration)
     }
