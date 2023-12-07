@@ -17,48 +17,50 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientCommunicationService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientCommunicationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientCommunicationService.class);
 
-  /** Service used to cache incoming connections from client applications. */
-  private final ConnectionCacheService connectionCacheService;
+    /**
+     * Service used to cache incoming connections from client applications.
+     */
+    private final ConnectionCacheService connectionCacheService;
 
-  /** Service used to sign and/or verify the content of queue messages. */
-  private final SigningService signingService;
+    /**
+     * Service used to sign and/or verify the content of queue messages.
+     */
+    private final SigningService signingService;
 
-  public ClientCommunicationService(
-      final ConnectionCacheService connectionCacheService, final SigningService signingService) {
-    this.connectionCacheService = connectionCacheService;
-    this.signingService = signingService;
-  }
-
-  /**
-   * Process an incoming queue message. The content of the message has to be verified by the {@link
-   * SigningService}. Then a response from GXF will set for the pending connection from a client.
-   *
-   * @param proxyServerResponseMessage The incoming queue message to process.
-   */
-  public void handleIncomingResponse(final ProxyServerResponseMessage proxyServerResponseMessage) {
-    final boolean isValid =
-        signingService.verifyContent(
-            proxyServerResponseMessage.constructString(),
-            proxyServerResponseMessage.getSignature());
-
-    try {
-      final Connection connection =
-          connectionCacheService.findConnection(proxyServerResponseMessage.getConnectionId());
-      if (connection != null) {
-        if (isValid) {
-          LOGGER.debug("Connection valid, set SOAP response");
-          connection.setSoapResponse(proxyServerResponseMessage.getSoapResponse());
-        } else {
-          LOGGER.error("ProxyServerResponseMessage failed to pass security check.");
-          connection.setSoapResponse("Security check has failed.");
-        }
-      } else {
-        LOGGER.error("No connection found in cache for id.");
-      }
-    } catch (final ConnectionNotFoundInCacheException e) {
-      LOGGER.error("ConnectionNotFoundInCacheException", e);
+    public ClientCommunicationService(
+            final ConnectionCacheService connectionCacheService, final SigningService signingService) {
+        this.connectionCacheService = connectionCacheService;
+        this.signingService = signingService;
     }
-  }
+
+    /**
+     * Process an incoming queue message. The content of the message has to be verified by the {@link
+     * SigningService}. Then a response from GXF will set for the pending connection from a client.
+     *
+     * @param proxyServerResponseMessage The incoming queue message to process.
+     */
+    public void handleIncomingResponse(final ProxyServerResponseMessage proxyServerResponseMessage) {
+        final boolean isValid =
+                signingService.verifyContent(
+                        proxyServerResponseMessage.constructString(),
+                        proxyServerResponseMessage.getSignature());
+
+        final Connection connection =
+                connectionCacheService.findConnection(proxyServerResponseMessage.getConnectionId());
+
+        if (connection == null) {
+            LOGGER.error("No connection found in cache for id: {}", proxyServerResponseMessage.getConnectionId());
+            return;
+        }
+
+        if (isValid) {
+            LOGGER.debug("Connection valid, set SOAP response");
+            connection.setSoapResponse(proxyServerResponseMessage.getSoapResponse());
+        } else {
+            LOGGER.error("ProxyServerResponseMessage failed to pass security check.");
+            connection.setSoapResponse("Security check has failed.");
+        }
+    }
 }

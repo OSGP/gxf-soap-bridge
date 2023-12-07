@@ -5,6 +5,7 @@ package org.gxf.soapbridge.application.services;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import org.gxf.soapbridge.monitoring.MonitoringService;
 import org.gxf.soapbridge.soap.clients.Connection;
@@ -53,19 +54,12 @@ public class ConnectionCacheService {
    *
    * @param connectionId The key for the {@link Connection} instance obtained by calling {@link
    *     ConnectionCacheService#cacheConnection()}.
-   * @return A {@link Connection} instance.
-   * @throws ConnectionNotFoundInCacheException In case the connection is not present in the {@link
-   *     ConnectionCacheService#cache}.
+   * @return A {@link Connection} instance. If no connection with the id is present return null.
    */
-  public Connection findConnection(final String connectionId)
-      throws ConnectionNotFoundInCacheException {
+  @Nullable
+  public Connection findConnection(final String connectionId) {
     LOGGER.debug("Trying to find connection with connectionId: {}", connectionId);
-    final Connection connection = cache.get(connectionId);
-    if (connection == null) {
-      throw new ConnectionNotFoundInCacheException(
-          String.format("Unable to find connection for connectionId: %s", connectionId));
-    }
-    return connection;
+    return cache.get(connectionId);
   }
 
   /**

@@ -243,14 +243,16 @@ public class SoapEndpoint implements HttpRequestHandler {
 
   private String readResponse(final String connectionId) throws ServletException {
     final String soap;
-    try {
-      final Connection connection = connectionCacheService.findConnection(connectionId);
-      soap = connection.getSoapResponse();
-      connectionCacheService.removeConnection(connectionId);
-    } catch (final ConnectionNotFoundInCacheException e) {
-      LOGGER.error("Unexpected error while trying to find a cached connection", e);
+
+    final Connection connection = connectionCacheService.findConnection(connectionId);
+
+    if (connection == null) {
+      LOGGER.error("Unexpected error while trying to find a cached connection for id: {}", connectionId);
       throw new ServletException("Unable to obtain response");
     }
+
+    soap = connection.getSoapResponse();
+    connectionCacheService.removeConnection(connectionId);
     return soap;
   }
 
