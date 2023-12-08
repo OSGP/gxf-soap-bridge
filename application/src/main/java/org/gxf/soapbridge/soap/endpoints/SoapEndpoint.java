@@ -95,7 +95,7 @@ public class SoapEndpoint implements HttpRequestHandler {
     final String soapPayload = readSoapPayload(request);
     if (soapPayload == null) {
       LOGGER.error("Unable to read SOAP request, returning 500.");
-      monitoringService.recordConnectionTime(startTime, request.getRequestURI(), false);
+      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
       createErrorResponse(response);
       return;
     }
@@ -110,7 +110,7 @@ public class SoapEndpoint implements HttpRequestHandler {
       }
       if (organisationName == null) {
         LOGGER.error("Unable to find client certificate, returning 500.");
-        monitoringService.recordConnectionTime(startTime, request.getRequestURI(), false);
+        monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
         createErrorResponse(response);
         return;
       }
@@ -130,7 +130,7 @@ public class SoapEndpoint implements HttpRequestHandler {
       requestMessage.setSignature(signature);
     } catch (final ProxyServerException e) {
       LOGGER.error("Unable to sign message or set security key", e);
-      monitoringService.recordConnectionTime(startTime, request.getRequestURI(), false);
+      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
       createErrorResponse(response);
       connectionCacheService.removeConnection(connectionId);
       return;
@@ -152,14 +152,14 @@ public class SoapEndpoint implements HttpRequestHandler {
       final boolean responseReceived = newConnection.waitForResponseReceived(timeout);
       if (!responseReceived) {
         LOGGER.error("No response received within the specified timeout of {} seconds", timeout);
-        monitoringService.recordConnectionTime(startTime, request.getRequestURI(), false);
+        monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
         createErrorResponse(response);
         connectionCacheService.removeConnection(connectionId);
         return;
       }
     } catch (final InterruptedException e) {
       LOGGER.error("Error while waiting for response", e);
-      monitoringService.recordConnectionTime(startTime, request.getRequestURI(), false);
+      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
       createErrorResponse(response);
       connectionCacheService.removeConnection(connectionId);
       Thread.currentThread().interrupt();
@@ -169,12 +169,12 @@ public class SoapEndpoint implements HttpRequestHandler {
     final String soap = readResponse(connectionId);
     if (soap == null) {
       LOGGER.error("Unable to read SOAP response: null");
-      monitoringService.recordConnectionTime(startTime, request.getRequestURI(), false);
+      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
       createErrorResponse(response);
     } else {
       LOGGER.debug("Request handled, trying to send response...");
       createSuccessFulResponse(response, soap);
-      monitoringService.recordConnectionTime(startTime, request.getRequestURI(), true);
+      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), true);
     }
 
     LOGGER.debug(
