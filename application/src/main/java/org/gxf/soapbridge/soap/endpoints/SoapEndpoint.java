@@ -41,6 +41,7 @@ public class SoapEndpoint implements HttpRequestHandler {
   private static final Logger LOGGER = LoggerFactory.getLogger(SoapEndpoint.class);
 
   private static final String URL_PROXY_SERVER = "/proxy-server";
+  private static final String URL_NOTIFICATIONS = "/proxy-server/notifications";
 
   private static final int INVALID_CUSTOM_TIME_OUT = -1;
 
@@ -211,7 +212,7 @@ public class SoapEndpoint implements HttpRequestHandler {
   }
 
   private String getContextForRequestType(final HttpServletRequest request) {
-    return request.getRequestURI().replace(URL_PROXY_SERVER, "");
+    return request.getRequestURI().replace(URL_NOTIFICATIONS, "").replace(URL_PROXY_SERVER, "");
   }
 
   private String readSoapPayload(final HttpServletRequest request) {
