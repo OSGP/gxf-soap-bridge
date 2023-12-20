@@ -50,11 +50,6 @@ public class PlatformCommunicationService {
     final String commonName = proxyServerRequestMessage.getCommonName();
     final String soapPayload = proxyServerRequestMessage.getSoapPayload();
 
-    final boolean result = soapClient.sendRequest(connectionId, context, commonName, soapPayload);
-    if (!result) {
-      LOGGER.error("Unsuccessful at sending request to platform.");
-    } else {
-      LOGGER.debug("Successfully sent response message to queue");
-    }
+    soapClient.sendRequest(connectionId, context, commonName, soapPayload);
   }
 }

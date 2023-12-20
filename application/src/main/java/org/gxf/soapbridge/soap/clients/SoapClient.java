@@ -17,6 +17,7 @@ import org.gxf.soapbridge.soap.exceptions.UnableToCreateHttpsURLConnectionExcept
 import org.gxf.soapbridge.valueobjects.ProxyServerResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /** This {@link @Component} class can send SOAP messages to the Platform. */
@@ -54,10 +55,9 @@ public class SoapClient {
    * @param context The part of the URL indicating the SOAP web-service.
    * @param commonName The common name (organisation identification).
    * @param soapPayload The SOAP message to send to the platform.
-   * @return True if the request has been sent and the response has been received and written to a
-   *     queue, false otherwise.
    */
-  public boolean sendRequest(
+  @Async
+  public void sendRequest(
       final String connectionId,
       final String context,
       final String commonName,
@@ -70,7 +70,7 @@ public class SoapClient {
       connection = createConnection(context, soapPayload, commonName);
       if (connection == null) {
         LOGGER.warn("Could not create connection for sending SOAP request.");
-        return false;
+        return;
       }
 
       // Send the SOAP payload to the server.
@@ -89,13 +89,11 @@ public class SoapClient {
       // Send queue message.
       proxyReponseSender.send(responseMessage);
 
-      return true;
     } catch (final Exception e) {
       if (connection != null) {
         connection.disconnect();
       }
       LOGGER.error("Unexpected exception while sending SOAP request", e);
-      return false;
     }
   }
 
