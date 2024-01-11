@@ -14,8 +14,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-logging")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("com.gxf.utilities:kafka-azure-oauth:0.2")
-    implementation("com.microsoft.azure:msal4j:1.13.10")
-    implementation("org.apache.httpcomponents:httpclient:4.5.13") {
+    implementation("org.apache.httpcomponents:httpclient:4.5.14") {
         exclude("commons-logging")
     }
     implementation(kotlin("reflect"))
@@ -58,9 +57,7 @@ testing {
                 implementation("org.springframework.kafka:spring-kafka-test")
                 implementation("org.assertj:assertj-core")
                 implementation("org.springframework.boot:spring-boot-starter-webflux")
-                implementation("org.wiremock:wiremock:3.3.1")
-
-                implementation("org.testcontainers:kafka:1.17.6")
+                implementation("org.wiremock:wiremock-standalone:3.3.1")
             }
         }
     }
