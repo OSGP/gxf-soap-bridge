@@ -4,13 +4,13 @@ import io.spring.gradle.dependencymanagement.internal.dsl.StandardDependencyMana
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.1.5" apply false
-    id("io.spring.dependency-management") version "1.1.3" apply false
-    kotlin("jvm") version "1.9.10" apply false
-    kotlin("plugin.spring") version "1.9.10" apply false
-    kotlin("plugin.jpa") version "1.9.10" apply false
-    id("com.github.davidmc24.gradle.plugin.avro") version "1.8.0" apply false
-    id("org.sonarqube") version "4.2.1.3168"
+    id("org.springframework.boot") version "3.2.1" apply false
+    id("io.spring.dependency-management") version "1.1.4" apply false
+    kotlin("jvm") version "1.9.22" apply false
+    kotlin("plugin.spring") version "1.9.22" apply false
+    kotlin("plugin.jpa") version "1.9.22" apply false
+    id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1" apply false
+    id("org.sonarqube") version "4.4.1.3373"
     id("eclipse")
 }
 
@@ -23,7 +23,6 @@ sonarqube {
         property("sonar.organization", "gxf")
     }
 }
-tasks.sonar
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -51,7 +50,7 @@ subprojects {
 
     extensions.configure<JavaPluginExtension> {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
+            languageVersion.set(JavaLanguageVersion.of(21))
         }
     }
 
@@ -64,7 +63,7 @@ subprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "17"
+            jvmTarget = "21"
         }
     }
 

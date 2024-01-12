@@ -4,8 +4,11 @@
 package org.gxf.soapbridge.application.services;
 
 import java.util.concurrent.ConcurrentHashMap;
+
+import jakarta.annotation.Nullable;
+import jakarta.annotation.PostConstruct;
+import org.gxf.soapbridge.monitoring.MonitoringService;
 import org.gxf.soapbridge.soap.clients.Connection;
-import org.gxf.soapbridge.soap.exceptions.ConnectionNotFoundInCacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,17 @@ public class ConnectionCacheService {
    * Map used to cache connections. The key is an uuid. The value is a {@link Connection} instance.
    */
   private static final ConcurrentHashMap<String, Connection> cache = new ConcurrentHashMap<>();
+
+  private final MonitoringService monitoringService;
+
+  public ConnectionCacheService(MonitoringService monitoringService) {
+    this.monitoringService = monitoringService;
+  }
+
+  @PostConstruct
+  public void postConstructor() {
+    monitoringService.monitorCacheSize(cache);
+  }
 
   /**
    * Creates a connection and puts it in the cache.
@@ -39,19 +53,12 @@ public class ConnectionCacheService {
    *
    * @param connectionId The key for the {@link Connection} instance obtained by calling {@link
    *     ConnectionCacheService#cacheConnection()}.
-   * @return A {@link Connection} instance.
-   * @throws ConnectionNotFoundInCacheException In case the connection is not present in the {@link
-   *     ConnectionCacheService#cache}.
+   * @return A {@link Connection} instance. If no connection with the id is present return null.
    */
-  public Connection findConnection(final String connectionId)
-      throws ConnectionNotFoundInCacheException {
+  @Nullable
+  public Connection findConnection(final String connectionId) {
     LOGGER.debug("Trying to find connection with connectionId: {}", connectionId);
-    final Connection connection = cache.get(connectionId);
-    if (connection == null) {
-      throw new ConnectionNotFoundInCacheException(
-          String.format("Unable to find connection for connectionId: %s", connectionId));
-    }
-    return connection;
+    return cache.get(connectionId);
   }
 
   /**
