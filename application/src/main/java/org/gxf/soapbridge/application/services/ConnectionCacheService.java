@@ -40,12 +40,12 @@ public class ConnectionCacheService {
    *
    * @return the created Connection
    */
-  public Connection cacheConnection() {
+  public CachedConnection cacheConnection() {
     final Connection connection = new Connection();
     final String connectionId = connection.getConnectionId();
     LOGGER.debug("Caching connection with connectionId: {}", connectionId);
     cache.put(connectionId, connection);
-    return connection;
+    return new CachedConnection(connection, this);
   }
 
   /**
@@ -67,8 +67,27 @@ public class ConnectionCacheService {
    * @param connectionId The key for the {@link Connection} instance obtained by calling {@link
    *     ConnectionCacheService#cacheConnection()}.
    */
-  public void removeConnection(final String connectionId) {
+  private void removeConnection(final String connectionId) {
     LOGGER.debug("Removing connection with connectionId: {}", connectionId);
     cache.remove(connectionId);
+  }
+
+  public static class CachedConnection implements AutoCloseable {
+    private final Connection connection;
+    private final ConnectionCacheService cacheService;
+
+    public CachedConnection(Connection connection, ConnectionCacheService cacheService) {
+      this.connection = connection;
+      this.cacheService = cacheService;
+    }
+
+    @Override
+    public void close() {
+      cacheService.removeConnection(connection.getConnectionId());
+    }
+
+    public Connection getConnection() {
+      return connection;
+    }
   }
 }
