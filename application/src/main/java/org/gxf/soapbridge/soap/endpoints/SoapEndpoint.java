@@ -120,66 +120,65 @@ public class SoapEndpoint implements HttpRequestHandler {
     }
 
     // Cache the incoming connection.
-    final Connection newConnection = connectionCacheService.cacheConnection();
-    final String connectionId = newConnection.getConnectionId();
+    try(final var cachedConnection = connectionCacheService.cacheConnection()) {
+      final var newConnection = cachedConnection.getConnection();
+      final String connectionId = newConnection.getConnectionId();
 
-    // Create a queue message and sign it.
-    final ProxyServerRequestMessage requestMessage =
-        new ProxyServerRequestMessage(connectionId, organisationName, context, soapPayload);
-    try {
-      final String signature = signingService.signContent(requestMessage.constructString());
-      requestMessage.setSignature(signature);
-    } catch (final ProxyServerException e) {
-      LOGGER.error("Unable to sign message or set security key", e);
-      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
-      createErrorResponse(response);
-      connectionCacheService.removeConnection(connectionId);
-      return;
-    }
-
-    final Integer customTimeOut = shouldUseCustomTimeOut(soapPayload);
-    final int timeout;
-    if (customTimeOut == INVALID_CUSTOM_TIME_OUT) {
-      timeout = soapConfiguration.getTimeout();
-      LOGGER.debug("Using default timeout: {} seconds", timeout);
-    } else {
-      LOGGER.debug("Using custom timeout: {} seconds", customTimeOut);
-      timeout = customTimeOut;
-    }
-
-    try {
-      proxyRequestsSender.send(requestMessage);
-
-      final boolean responseReceived = newConnection.waitForResponseReceived(timeout);
-      if (!responseReceived) {
-        LOGGER.error("No response received within the specified timeout of {} seconds", timeout);
+      // Create a queue message and sign it.
+      final ProxyServerRequestMessage requestMessage =
+              new ProxyServerRequestMessage(connectionId, organisationName, context, soapPayload);
+      try {
+        final String signature = signingService.signContent(requestMessage.constructString());
+        requestMessage.setSignature(signature);
+      } catch (final ProxyServerException e) {
+        LOGGER.error("Unable to sign message or set security key", e);
         monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
         createErrorResponse(response);
-        connectionCacheService.removeConnection(connectionId);
         return;
       }
-    } catch (final InterruptedException e) {
-      LOGGER.error("Error while waiting for response", e);
-      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
-      createErrorResponse(response);
-      connectionCacheService.removeConnection(connectionId);
-      Thread.currentThread().interrupt();
-      return;
-    }
 
-    final String soap = readResponse(connectionId);
-    if (soap == null) {
-      LOGGER.error("Unable to read SOAP response: null");
-      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
-      createErrorResponse(response);
-    } else {
-      LOGGER.debug("Request handled, trying to send response...");
-      createSuccessFulResponse(response, soap);
-      monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), true);
-    }
+      final Integer customTimeOut = shouldUseCustomTimeOut(soapPayload);
+      final int timeout;
+      if (customTimeOut == INVALID_CUSTOM_TIME_OUT) {
+        timeout = soapConfiguration.getTimeout();
+        LOGGER.debug("Using default timeout: {} seconds", timeout);
+      } else {
+        LOGGER.debug("Using custom timeout: {} seconds", customTimeOut);
+        timeout = customTimeOut;
+      }
 
-    LOGGER.debug(
-        "End of SoapEndpoint.handleRequest() --> incoming request handled and response returned.");
+      try {
+        proxyRequestsSender.send(requestMessage);
+
+        final boolean responseReceived = newConnection.waitForResponseReceived(timeout);
+        if (!responseReceived) {
+          LOGGER.error("No response received within the specified timeout of {} seconds", timeout);
+          monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
+          createErrorResponse(response);
+          return;
+        }
+      } catch (final InterruptedException e) {
+        LOGGER.error("Error while waiting for response", e);
+        monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
+        createErrorResponse(response);
+        Thread.currentThread().interrupt();
+        return;
+      }
+
+      final String soap = readResponse(connectionId);
+      if (soap == null) {
+        LOGGER.error("Unable to read SOAP response: null");
+        monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), false);
+        createErrorResponse(response);
+      } else {
+        LOGGER.debug("Request handled, trying to send response...");
+        createSuccessFulResponse(response, soap);
+        monitoringService.recordConnectionTime(startTime, getContextForRequestType(request), true);
+      }
+
+      LOGGER.debug(
+              "End of SoapEndpoint.handleRequest() --> incoming request handled and response returned.");
+    }
   }
 
   private void logHeaderValues(final HttpServletRequest request) {
@@ -254,7 +253,6 @@ public class SoapEndpoint implements HttpRequestHandler {
     }
 
     soap = connection.getSoapResponse();
-    connectionCacheService.removeConnection(connectionId);
     return soap;
   }
 
