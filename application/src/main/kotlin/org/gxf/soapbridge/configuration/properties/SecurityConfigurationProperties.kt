@@ -4,7 +4,7 @@
 
 package org.gxf.soapbridge.configuration.properties
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.io.IOException
 import java.nio.file.Files
@@ -55,7 +55,7 @@ class SigningConfigurationProperties(
             val privateKeyFactory = KeyFactory.getInstance(keyType, provider)
             privateKeyFactory.generatePrivate(privateKeySpec)
         } catch (e: Exception) {
-            logger.error("Unexpected exception during private key creation", e)
+            logger.error(e) { "Unexpected exception during private key creation" }
             null
         }
     }
@@ -69,7 +69,7 @@ class SigningConfigurationProperties(
             val publicKeyFactory = KeyFactory.getInstance(keyType, provider)
             publicKeyFactory.generatePublic(publicKeySpec)
         } catch (e: Exception) {
-            logger.error("Unexpected exception during public key creation", e)
+            logger.error(e) { "Unexpected exception during public key creation" }
             null
         }
     }

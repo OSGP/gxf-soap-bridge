@@ -4,7 +4,7 @@
 
 package org.gxf.soapbridge.valueobjects
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gxf.soapbridge.exceptions.ProxyMessageException
 import java.util.*
 
@@ -43,7 +43,7 @@ class ProxyServerRequestMessage(
                     "Invalid number of tokens, not trying to create ProxyServerRequestMessage."
                 )
             }
-            if (LOGGER.isDebugEnabled) {
+            if (LOGGER.isDebugEnabled()) {
                 printValues(numTokens, split)
             }
             val connectionId = split[0]
@@ -67,16 +67,16 @@ class ProxyServerRequestMessage(
         }
 
         private fun printValues(numTokens: Int, split: List<String?>) {
-            if (LOGGER.isDebugEnabled) {
-                LOGGER.debug("split[0] connection-id: {}", split[0])
-                LOGGER.debug("split[2] context      : {}", decode(split[1]))
-                LOGGER.debug("split[3] encoded soap-request length: {}", split[2]!!.length)
-                LOGGER.debug("split[3] soap-request : {}", decode(split[2]))
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug { "split[0] connection-id: ${split[0]}" }
+                LOGGER.debug { "split[2] context      : ${decode(split[1])}" }
+                LOGGER.debug { "split[3] encoded soap-request length: ${split[2]!!.length}" }
+                LOGGER.debug { "split[3] soap-request : ${decode(split[2])}" }
                 if (numTokens == 5) {
-                    LOGGER.debug("split[4] security-key : {}", split[3])
+                    LOGGER.debug { "split[4] security-key : ${split[3]}" }
                 } else {
-                    LOGGER.debug("split[4] common-name  : {}", decode(split[3]))
-                    LOGGER.debug("split[5] security-signature : {}", split[4])
+                    LOGGER.debug { "split[4] common-name  : ${decode(split[3])}" }
+                    LOGGER.debug { "split[5] security-signature : ${split[4]}" }
                 }
             }
         }

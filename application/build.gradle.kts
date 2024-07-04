@@ -13,12 +13,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-logging")
     implementation("org.springframework.kafka:spring-kafka")
-    implementation("com.gxf.utilities:kafka-azure-oauth:0.2")
-    implementation("org.apache.httpcomponents:httpclient:4.5.14") {
+    implementation(libs.kafkaAzureOAuth)
+    implementation(libs.apacheHttpClient) {
         exclude("commons-logging")
     }
     implementation(kotlin("reflect"))
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+    implementation(libs.logging)
 
     implementation("org.springframework:spring-aspects")
 
@@ -29,6 +29,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.mockito:mockito-junit-jupiter")
     testImplementation("org.assertj:assertj-core")
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Generate test and integration test reports
     jacocoAggregation(project(":application"))
@@ -57,7 +59,7 @@ testing {
                 implementation("org.springframework.kafka:spring-kafka-test")
                 implementation("org.assertj:assertj-core")
                 implementation("org.springframework.boot:spring-boot-starter-webflux")
-                implementation("org.wiremock:wiremock-standalone:3.3.1")
+                implementation(testLibs.mockServer)
             }
         }
     }
