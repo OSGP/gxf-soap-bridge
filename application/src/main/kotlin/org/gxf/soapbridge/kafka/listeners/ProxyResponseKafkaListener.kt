@@ -4,7 +4,7 @@
 
 package org.gxf.soapbridge.kafka.listeners
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.gxf.soapbridge.application.services.ClientCommunicationService
 import org.gxf.soapbridge.valueobjects.ProxyServerResponseMessage

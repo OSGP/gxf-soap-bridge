@@ -4,7 +4,7 @@
 
 package org.gxf.soapbridge.kafka.senders
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gxf.soapbridge.kafka.properties.TopicsConfigurationProperties
 import org.gxf.soapbridge.valueobjects.ProxyServerRequestMessage
 import org.springframework.kafka.core.KafkaTemplate

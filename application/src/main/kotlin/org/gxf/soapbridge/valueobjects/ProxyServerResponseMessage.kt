@@ -4,7 +4,7 @@
 
 package org.gxf.soapbridge.valueobjects
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gxf.soapbridge.exceptions.ProxyMessageException
 import java.util.*
 
@@ -38,11 +38,11 @@ class ProxyServerResponseMessage(connectionId: String, val soapResponse: String)
                     "Invalid number of tokens, don't try to create ProxyServerResponseMessage"
                 )
             }
-            if (logger.isDebugEnabled) {
-                logger.debug("split[0] connection-id: {}", split[0])
-                logger.debug("split[1] encoded soap-response length: {}", split[1].length)
-                logger.debug("split[1] soap-response: {}", decode(split[1]))
-                logger.debug("split[2] security-key : {}", split[2])
+            if (logger.isDebugEnabled()) {
+                logger.debug { "split[0] connection-id: ${split[0]}" }
+                logger.debug { "split[1] encoded soap-response length: ${split[1].length}" }
+                logger.debug { "split[1] soap-response: ${decode(split[1])}" }
+                logger.debug { "split[2] security-key : ${split[2]}" }
             }
             val proxyServerResponseMessage = ProxyServerResponseMessage(split[0], decode(split[1]))
             proxyServerResponseMessage.signature = split[2]
