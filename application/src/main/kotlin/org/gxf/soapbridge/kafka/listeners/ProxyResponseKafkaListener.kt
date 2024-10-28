@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: Copyright Contributors to the GXF project
 //
 // SPDX-License-Identifier: Apache-2.0
-
 package org.gxf.soapbridge.kafka.listeners
 
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProxyResponseKafkaListener(private val clientCommunicationService: ClientCommunicationService) {
-    private val logger = KotlinLogging.logger { }
+    private val logger = KotlinLogging.logger {}
 
     @KafkaListener(
         id = "gxf-response-consumer",

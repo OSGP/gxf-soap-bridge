@@ -9,7 +9,7 @@ and re-issue the SOAP request over there.
 
 ![](docs/proxy.svg)
 
-- `Servce X` will try to call Service Y. You've configured X to make the request to the proxy instead
+- `Service X` will try to call Service Y. You've configured X to make the request to the proxy instead
 - `Proxy A` will
     - store the HTTP connection used to receive the request and keep it open
     - receive the SOAP body and some meta data

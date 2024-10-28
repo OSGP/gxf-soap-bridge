@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: Copyright Contributors to the GXF project
 //
 // SPDX-License-Identifier: Apache-2.0
-
 package org.gxf.soapbridge.configuration
 
 import org.springframework.context.annotation.Bean
@@ -16,26 +15,15 @@ class SecurityConfiguration {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain =
-        http.authorizeHttpRequests {
-            it
-                .requestMatchers("/actuator/**").permitAll()
-                .anyRequest().authenticated()
-        }.x509 {
-            it
-                .subjectPrincipalRegex("CN=(.*?)(?:,|$)")
-                .userDetailsService(userDetailsService())
-        }.csrf { it.disable() }
+        http
+            .authorizeHttpRequests { it.requestMatchers("/actuator/**").permitAll().anyRequest().authenticated() }
+            .x509 { it.subjectPrincipalRegex("CN=(.*?)(?:,|$)").userDetailsService(userDetailsService()) }
+            .csrf { it.disable() }
             .build()
 
-
-    /**
-     * Uses the CN of the client certificate as the username for Springs Principal object
-     */
+    /** Uses the CN of the client certificate as the username for Springs Principal object */
     @Bean
-    fun userDetailsService(): UserDetailsService =
-        UserDetailsService { username ->
-            return@UserDetailsService User(
-                username, "", emptyList()
-            )
-        }
+    fun userDetailsService(): UserDetailsService = UserDetailsService { username ->
+        return@UserDetailsService User(username, "", emptyList())
+    }
 }

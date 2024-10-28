@@ -1,16 +1,17 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package org.gxf.soapbridge.monitoring
 
 import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Timer
-import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
+import org.springframework.stereotype.Service
 
 @Service
-class MonitoringService(
-    private val registry: MeterRegistry
-) {
+class MonitoringService(private val registry: MeterRegistry) {
 
     companion object {
         private const val METRIC_PREFIX = "gxf.soap.bridge"
@@ -19,7 +20,6 @@ class MonitoringService(
 
         const val CONNECTION_TIMER_CONTEXT_TAG = "context"
         const val CONNECTION_TIMER_SUCCESSFUL_TAG = "successful"
-
     }
 
     /**
@@ -29,9 +29,7 @@ class MonitoringService(
      * @return A Gauge object that measures the size of the cache.
      */
     fun monitorCacheSize(cache: Map<*, *>) =
-        Gauge
-            .builder(CACHE_SIZE_METRIC, cache) { it.size.toDouble() }
-            .register(registry)
+        Gauge.builder(CACHE_SIZE_METRIC, cache) { it.size.toDouble() }.register(registry)
 
     /**
      * Records the connection time for a request.
@@ -45,8 +43,7 @@ class MonitoringService(
     fun recordConnectionTime(startTime: Instant, context: String, successful: Boolean) {
         val duration = Duration.between(startTime, Instant.now())
 
-        Timer
-            .builder(CONNECTION_TIMER_METRIC)
+        Timer.builder(CONNECTION_TIMER_METRIC)
             .description("The time it takes to handle an incoming soap request")
             .tag(CONNECTION_TIMER_CONTEXT_TAG, context)
             .tag(CONNECTION_TIMER_SUCCESSFUL_TAG, successful.toString())

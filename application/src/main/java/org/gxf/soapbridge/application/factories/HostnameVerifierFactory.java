@@ -8,8 +8,8 @@ import static org.gxf.soapbridge.configuration.properties.HostnameVerificationSt
 import static org.gxf.soapbridge.configuration.properties.HostnameVerificationStrategy.BROWSER_COMPATIBLE_HOSTNAMES;
 
 import javax.net.ssl.HostnameVerifier;
-import org.apache.http.conn.ssl.DefaultHostnameVerifier;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
 import org.gxf.soapbridge.configuration.properties.SoapConfigurationProperties;
 import org.gxf.soapbridge.soap.exceptions.ProxyServerException;
 import org.springframework.stereotype.Component;
@@ -23,9 +23,9 @@ public class HostnameVerifierFactory {
   }
 
   public HostnameVerifier getHostnameVerifier() throws ProxyServerException {
-    if (soapConfiguration.getHostnameVerificationStrategy() == ALLOW_ALL_HOSTNAMES) {
+    if (this.soapConfiguration.getHostnameVerificationStrategy() == ALLOW_ALL_HOSTNAMES) {
       return new NoopHostnameVerifier();
-    } else if (soapConfiguration.getHostnameVerificationStrategy()
+    } else if (this.soapConfiguration.getHostnameVerificationStrategy()
         == BROWSER_COMPATIBLE_HOSTNAMES) {
       return new DefaultHostnameVerifier();
     } else {

@@ -1,9 +1,14 @@
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
 package org.gxf.soapbridge.monitoring
 
 import io.micrometer.core.instrument.ImmutableTag
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.search.Search
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import java.time.Instant
+import java.util.concurrent.TimeUnit
 import org.assertj.core.api.Assertions.assertThat
 import org.gxf.soapbridge.monitoring.MonitoringService.Companion.CACHE_SIZE_METRIC
 import org.gxf.soapbridge.monitoring.MonitoringService.Companion.CONNECTION_TIMER_CONTEXT_TAG
@@ -13,9 +18,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.time.Instant
-import java.util.concurrent.TimeUnit
-
 
 class MonitoringServiceTest {
 
@@ -65,35 +67,28 @@ class MonitoringServiceTest {
         val contextOne = "test-context-one"
         val successfulOne = true
 
-        val expectedTagsOne = listOf(
-            ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, contextOne),
-            ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulOne.toString())
-        )
+        val expectedTagsOne =
+            listOf(
+                ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, contextOne),
+                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulOne.toString())
+            )
 
         val contextTwo = "test-context-two"
         val successfulTwo = false
-        val expectedTagsTwo = listOf(
-            ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, contextTwo),
-            ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulTwo.toString())
-        )
+        val expectedTagsTwo =
+            listOf(
+                ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, contextTwo),
+                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulTwo.toString())
+            )
         monitoringService.recordConnectionTime(startTime, contextOne, successfulOne)
         monitoringService.recordConnectionTime(startTime, contextTwo, successfulTwo)
 
-        val timerOne =
-            Search.`in`(meterRegistry)
-                .name(CONNECTION_TIMER_METRIC)
-                .tags(expectedTagsOne)
-                .timer()
+        val timerOne = Search.`in`(meterRegistry).name(CONNECTION_TIMER_METRIC).tags(expectedTagsOne).timer()
 
         assertThat(timerOne).isNotNull()
 
-        val timerTwo =
-            Search.`in`(meterRegistry)
-                .name(CONNECTION_TIMER_METRIC)
-                .tags(expectedTagsTwo)
-                .timer()
+        val timerTwo = Search.`in`(meterRegistry).name(CONNECTION_TIMER_METRIC).tags(expectedTagsTwo).timer()
         assertThat(timerTwo).isNotNull()
-
     }
 
     @Test
@@ -105,17 +100,14 @@ class MonitoringServiceTest {
         monitoringService.recordConnectionTime(startTime, context, successful)
 
         // Find the timer by name and tags
-        val expectedTags = listOf(
-            ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, context),
-            ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successful.toString())
-        )
-        val timer = Search.`in`(meterRegistry)
-            .name(CONNECTION_TIMER_METRIC)
-            .tags(expectedTags)
-            .timer()
+        val expectedTags =
+            listOf(
+                ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, context),
+                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successful.toString())
+            )
+        val timer = Search.`in`(meterRegistry).name(CONNECTION_TIMER_METRIC).tags(expectedTags).timer()
         assertNotNull(timer)
         check(timer != null)
-
 
         assertThat(timer.count()).isEqualTo(1)
         assertThat(timer.totalTime(TimeUnit.NANOSECONDS)).isNotEqualTo(0)
@@ -128,7 +120,5 @@ class MonitoringServiceTest {
         assertThat(timer.totalTime(TimeUnit.NANOSECONDS)).isNotEqualTo(0)
         assertThat(timer.max(TimeUnit.NANOSECONDS)).isNotEqualTo(0)
         assertThat(timer.mean(TimeUnit.NANOSECONDS)).isNotEqualTo(0)
-
     }
-
 }
