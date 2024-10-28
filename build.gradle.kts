@@ -1,18 +1,21 @@
-// Copyright 2023 Alliander N.V.
-
+// SPDX-FileCopyrightText: Copyright Contributors to the GXF project
+//
+// SPDX-License-Identifier: Apache-2.0
+import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.davidmc24.gradle.plugin.avro.GenerateAvroJavaTask
 import io.spring.gradle.dependencymanagement.internal.dsl.StandardDependencyManagementExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.3.1" apply false
-    id("io.spring.dependency-management") version "1.1.5" apply false
+    id("org.springframework.boot") version "3.3.5" apply false
+    id("io.spring.dependency-management") version "1.1.6" apply false
     kotlin("jvm") version "2.0.0" apply false
     kotlin("plugin.spring") version "2.0.0" apply false
     kotlin("plugin.jpa") version "2.0.0" apply false
     id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1" apply false
-    id("org.sonarqube") version "5.0.0.4638"
+    id("com.diffplug.spotless") version("6.25.0")
+    id("org.sonarqube") version "5.1.0.4882"
     id("eclipse")
 }
 
@@ -30,6 +33,7 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "com.diffplug.spotless")
     apply(plugin = "eclipse")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     apply(plugin = "jacoco")
@@ -50,6 +54,17 @@ subprojects {
         }
     }
 
+    extensions.configure<SpotlessExtension> {
+        kotlin {
+            // by default the target is every '.kt' and '.kts' file in the java source sets
+            ktfmt().kotlinlangStyle().configure {
+                it.setMaxWidth(120)
+            }
+            licenseHeaderFile("${project.rootDir}/license-template.kt", "package")
+                .updateYearWithLatest(false)
+        }
+    }
+
     extensions.configure<StandardDependencyManagementExtension> {
         imports {
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
@@ -65,8 +80,18 @@ subprojects {
         }
     }
 
+    tasks.register<Copy>("updateGitHooks") {
+        description = "Copies the pre-commit Git Hook to the .git/hooks folder."
+        group = "verification"
+        from("${project.rootDir}/scripts/pre-commit")
+        into("${project.rootDir}/.git/hooks")
+    }
+
     tasks.withType<KotlinCompile> {
-        dependsOn(tasks.withType<GenerateAvroJavaTask>())
+        dependsOn(
+            tasks.withType<GenerateAvroJavaTask>(),
+            tasks.named("updateGitHooks")
+        )
     }
 
     tasks.withType<Test> {

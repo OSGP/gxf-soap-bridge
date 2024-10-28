@@ -1,11 +1,9 @@
 // SPDX-FileCopyrightText: Copyright Contributors to the GXF project
 //
 // SPDX-License-Identifier: Apache-2.0
-
 package org.gxf.soapbridge.configuration.properties
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.boot.context.properties.ConfigurationProperties
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -14,6 +12,7 @@ import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
+import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("security")
 class SecurityConfigurationProperties(
@@ -22,12 +21,7 @@ class SecurityConfigurationProperties(
     val signing: SigningConfigurationProperties
 )
 
-class StoreConfigurationProperties(
-    val location: String,
-    val password: String,
-    val type: String
-)
-
+class StoreConfigurationProperties(val location: String, val password: String, val type: String)
 
 class SigningConfigurationProperties(
     keyType: String,
@@ -46,9 +40,7 @@ class SigningConfigurationProperties(
     /** Public key used for verification. */
     val verifyKey = createPublicKey(verifyKeyFile, keyType, provider)
 
-    private fun createPrivateKey(
-        keyPath: String, keyType: String, provider: String
-    ): PrivateKey? {
+    private fun createPrivateKey(keyPath: String, keyType: String, provider: String): PrivateKey? {
         return try {
             val key = readKeyFromDisk(keyPath)
             val privateKeySpec = PKCS8EncodedKeySpec(key)
@@ -60,9 +52,7 @@ class SigningConfigurationProperties(
         }
     }
 
-    private fun createPublicKey(
-        keyPath: String, keyType: String, provider: String
-    ): PublicKey? {
+    private fun createPublicKey(keyPath: String, keyType: String, provider: String): PublicKey? {
         return try {
             val key = readKeyFromDisk(keyPath)
             val publicKeySpec = X509EncodedKeySpec(key)
