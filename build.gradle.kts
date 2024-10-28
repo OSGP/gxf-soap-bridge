@@ -60,9 +60,7 @@ subprojects {
             ktfmt().kotlinlangStyle().configure {
                 it.setMaxWidth(120)
             }
-            licenseHeaderFile(
-                "${project.rootDir}/license-template.kt",
-                "package")
+            licenseHeaderFile("${project.rootDir}/license-template.kt", "package")
                 .updateYearWithLatest(false)
         }
     }
