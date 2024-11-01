@@ -4,6 +4,8 @@
 
 name: Build Pipeline
 
+permissions: write-all
+
 on:
   push:
     branches: [ "main" ]
