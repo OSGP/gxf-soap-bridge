@@ -7,12 +7,12 @@ plugins {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-logging")
-    implementation("org.springframework.kafka:spring-kafka")
+    implementation(libs.springBootStarterActuator)
+    implementation(libs.springBootStarterWeb)
+    implementation(libs.springBootStarterWebflux)
+    implementation(libs.springBootStarterSecurity)
+    implementation(libs.springBootStarterLogging)
+    implementation(libs.springKafka)
     implementation(libs.kafkaAzureOAuth)
     implementation(libs.apacheHttpClient) {
         exclude("commons-logging")
@@ -22,15 +22,15 @@ dependencies {
 
     implementation("org.springframework:spring-aspects")
 
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.jupiter:junit-jupiter-params")
-    testImplementation("org.mockito:mockito-junit-jupiter")
-    testImplementation("org.assertj:assertj-core")
+    runtimeOnly(libs.micrometerPrometheusModule)
+    runtimeOnly(libs.springBootDependencies)
+    testImplementation(libs.junitJupiterApi)
+    testImplementation(libs.junitJupiterEngine)
+    testImplementation(libs.junitJupiterParams)
+    testImplementation(libs.mockitoJunitJupiter)
+    testImplementation(libs.assertJ)
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly(libs.junitPlatformLauncher)
 
     // Generate test and integration test reports
     jacocoAggregation(project(":application"))
@@ -55,11 +55,11 @@ testing {
             useJUnitJupiter()
             dependencies {
                 implementation(project())
-                implementation("org.springframework.boot:spring-boot-starter-test")
-                implementation("org.springframework.kafka:spring-kafka-test")
-                implementation("org.assertj:assertj-core")
-                implementation("org.springframework.boot:spring-boot-starter-webflux")
-                implementation(testLibs.mockServer)
+                implementation(libs.springBootStarterTest)
+                implementation(libs.springKafkaTest)
+                implementation(libs.assertJ)
+                implementation(libs.springBootStarterWebflux)
+                implementation(libs.mockServer)
             }
         }
     }
