@@ -4,14 +4,13 @@
 package org.gxf.soapbridge.valueobjects
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import java.util.*
 import org.gxf.soapbridge.exceptions.ProxyMessageException
 
 class ProxyServerRequestMessage(
     connectionId: String,
     val commonName: String,
     val context: String,
-    val soapPayload: String
+    val soapPayload: String,
 ) : ProxyServerBaseMessage(connectionId) {
 
     override fun getFieldsForMessage(): List<String> =
@@ -31,7 +30,7 @@ class ProxyServerRequestMessage(
         fun createInstanceFromString(string: String): ProxyServerRequestMessage {
             val split = string.split(SEPARATOR)
             val numTokens = split.size
-            LOGGER.debug { "split.length: ${numTokens}" }
+            LOGGER.debug { "split.length: $numTokens" }
             if (numTokens < 4 || numTokens > 5) {
                 throw ProxyMessageException("Invalid number of tokens, not trying to create ProxyServerRequestMessage.")
             }
