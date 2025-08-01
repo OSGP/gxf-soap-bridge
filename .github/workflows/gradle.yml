@@ -4,8 +4,6 @@
 
 name: Build Pipeline
 
-permissions: write-all
-
 on:
   push:
     branches: [ "main" ]
@@ -13,10 +11,12 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions: write-all
+
 jobs:
   build:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: [ self-hosted, X64, Linux, default ]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,16 +26,13 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: 'gradle'
       - name: Setup Gradle to generate and submit dependency graphs
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
           dependency-graph: generate-and-submit
       - name: Build with Gradle
-        run: ./gradlew build testCodeCoverageReport integrationTestCodeCoverageReport integrationTest bootBuildImage
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run sonar analysis with Gradle
-        run: ./gradlew sonar
+        run: ./gradlew build testCodeCoverageReport integrationTestCodeCoverageReport integrationTest sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
