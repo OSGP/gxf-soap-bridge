@@ -1,14 +1,14 @@
 [versions]
-kotlinLogging = "7.0.7"
-gxfUtils = "2.4.0"
+kotlinLogging = "7.0.0"
+gxfUtils = "2.1"
 apacheHttpClient = "5.4"
-dependency-management = "1.1.7"
+dependency-management = "1.1.6"
 gradleWrapperUpgrade = "0.12"
-kotlin = "2.2.0"
-sonarqube = "6.2.0.5505"
-spotless = "7.2.1"
-spring-boot = "3.5.4"
-wiremock = "3.13.1"
+kotlin = "2.0.0"
+sonarqube = "5.1.0.4882"
+spotless = "6.25.0"
+spring-boot = "3.3.5"
+wiremock = "3.9.2"
 
 [libraries]
 logging = { group = "io.github.oshai", name = "kotlin-logging-jvm", version.ref = "kotlinLogging" }
