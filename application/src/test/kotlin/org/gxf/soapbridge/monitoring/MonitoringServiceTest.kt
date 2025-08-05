@@ -70,7 +70,7 @@ class MonitoringServiceTest {
         val expectedTagsOne =
             listOf(
                 ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, contextOne),
-                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulOne.toString()),
+                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulOne.toString())
             )
 
         val contextTwo = "test-context-two"
@@ -78,7 +78,7 @@ class MonitoringServiceTest {
         val expectedTagsTwo =
             listOf(
                 ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, contextTwo),
-                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulTwo.toString()),
+                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successfulTwo.toString())
             )
         monitoringService.recordConnectionTime(startTime, contextOne, successfulOne)
         monitoringService.recordConnectionTime(startTime, contextTwo, successfulTwo)
@@ -103,7 +103,7 @@ class MonitoringServiceTest {
         val expectedTags =
             listOf(
                 ImmutableTag(CONNECTION_TIMER_CONTEXT_TAG, context),
-                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successful.toString()),
+                ImmutableTag(CONNECTION_TIMER_SUCCESSFUL_TAG, successful.toString())
             )
         val timer = Search.`in`(meterRegistry).name(CONNECTION_TIMER_METRIC).tags(expectedTags).timer()
         assertNotNull(timer)

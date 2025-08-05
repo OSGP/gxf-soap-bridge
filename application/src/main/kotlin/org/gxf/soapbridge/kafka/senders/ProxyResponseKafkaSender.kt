@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 @Component
 class ProxyResponseKafkaSender(
     private val kafkaTemplate: KafkaTemplate<String, String>,
-    topicConfiguration: TopicsConfigurationProperties,
+    topicConfiguration: TopicsConfigurationProperties
 ) {
     private val logger = KotlinLogging.logger {}
 

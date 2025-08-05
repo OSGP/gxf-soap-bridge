@@ -5,7 +5,10 @@ package org.gxf.soapbridge.kafka.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties("kafka") class TopicsConfigurationProperties(val outgoing: OutgoingTopicsConfiguration)
+@ConfigurationProperties("kafka")
+class TopicsConfigurationProperties(
+    val outgoing: OutgoingTopicsConfiguration,
+)
 
 class OutgoingTopicsConfiguration(val requests: OutgoingTopic, val responses: OutgoingTopic)
 

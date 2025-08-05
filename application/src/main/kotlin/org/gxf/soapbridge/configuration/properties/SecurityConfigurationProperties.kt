@@ -18,7 +18,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class SecurityConfigurationProperties(
     val keyStore: StoreConfigurationProperties?,
     val trustStore: StoreConfigurationProperties,
-    val signing: SigningConfigurationProperties,
+    val signing: SigningConfigurationProperties
 )
 
 class StoreConfigurationProperties(val location: String, val password: String, val type: String)
@@ -30,7 +30,7 @@ class SigningConfigurationProperties(
     /** Indicates which provider is used for signing and verification. */
     val provider: String,
     /** Indicates which signature is used for signing and verification. */
-    val signature: String,
+    val signature: String
 ) {
     private val logger = KotlinLogging.logger {}
 
