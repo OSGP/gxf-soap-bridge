@@ -11,7 +11,7 @@ class ProxyServerRequestMessage(
     connectionId: String,
     val commonName: String,
     val context: String,
-    val soapPayload: String
+    val soapPayload: String,
 ) : ProxyServerBaseMessage(connectionId) {
 
     override fun getFieldsForMessage(): List<String> =
