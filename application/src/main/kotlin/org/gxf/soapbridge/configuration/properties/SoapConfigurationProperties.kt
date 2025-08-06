@@ -30,7 +30,7 @@ class SoapConfigurationProperties(
 
 enum class HostnameVerificationStrategy {
     ALLOW_ALL_HOSTNAMES,
-    BROWSER_COMPATIBLE_HOSTNAMES
+    BROWSER_COMPATIBLE_HOSTNAMES,
 }
 
 class SoapEndpointConfiguration(host: String, port: Int, protocol: String) {
