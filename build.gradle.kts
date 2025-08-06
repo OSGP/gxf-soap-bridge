@@ -28,6 +28,15 @@ sonarqube {
     }
 }
 
+wrapperUpgrade {
+    gradle {
+        register("gxf-soap-bridge") {
+            repo.set("OSGP/gxf-soap-bridge")
+            baseBranch.set("main")
+        }
+    }
+}
+
 subprojects {
     apply(plugin = rootProject.libs.plugins.springBoot.get().pluginId)
     apply(plugin = rootProject.libs.plugins.dependencyManagement.get().pluginId)
