@@ -1,5 +1,5 @@
 [versions]
-kotlinLogging = "7.0.11"
+kotlinLogging = "7.0.12"
 gxfUtils = "2.4.0"
 apacheHttpClient = "5.5"
 dependency-management = "1.1.7"
