@@ -1,6 +1,6 @@
 [versions]
 kotlinLogging = "7.0.13"
-gxfUtils = "2.7"
+gxfUtils = "2.7.1"
 apacheHttpClient = "5.5"
 dependency-management = "1.1.7"
 gradleWrapperUpgrade = "0.12"
