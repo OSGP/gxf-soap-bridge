@@ -60,16 +60,16 @@ class EndToEndTest(
 
     val soapBody =
         """
-        <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org">
-          <soap:Header>
-          </soap:Header>
-          <soap:Body>
-            <m:GetStockPrice>
-              <m:StockName>T</m:StockName>
-            </m:GetStockPrice>
-          </soap:Body>
-        </soap:Envelope>
-    """
+            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org">
+              <soap:Header>
+              </soap:Header>
+              <soap:Body>
+                <m:GetStockPrice>
+                  <m:StockName>T</m:StockName>
+                </m:GetStockPrice>
+              </soap:Body>
+            </soap:Envelope>
+        """
             .trimIndent()
 
     val soapResponse = "Read This Fine Message"
