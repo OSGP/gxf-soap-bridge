@@ -7,7 +7,7 @@ gradleWrapperUpgrade = "0.12"
 kotlin = "2.2.21"
 sonarqube = "7.0.1.6134"
 spotless = "8.0.0"
-spring-boot = "3.5.7"
+spring-boot = "4.0.1"
 wiremock = "3.13.1"
 
 [libraries]
